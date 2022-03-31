@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
-
-import 'app.dart';
-import 'flavors.dart';
+import 'package:nengar/flavors.dart';
+import 'package:nengar/main.dart';
 
 void main() {
-  F.appFlavor = Flavor.PRODUCTION;
-  runApp(App());
+  run(Flavor.PRODUCTION);
 }
