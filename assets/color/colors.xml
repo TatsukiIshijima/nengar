@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="milk_tea">#F5CB84</color>
-    <color
-        name="cinnamon"
-        type="material">#955E1C
-    </color>
-    <color
-        name="yellow_ocher"
-        type="material material-accent">#DF9527
-    </color>
+    <!-- Light Mode Theme -->
+    <color name="colorPrimary">#4B39EF</color>
+    <color name="colorSecondary">#39D2C0</color>
+    <color name="colorTertiary">#EE8B60</color>
+    <color name="colorAlternate">#FF5963</color>
+    <color name="colorPrimaryBackground">#F1F4F8</color>
+    <color name="colorSecondaryBackground">#FFFFFF</color>
+    <color name="colorPrimaryText">#101213</color>
+    <color name="colorSecondaryText">#57636C</color>
+    <color name="colorPrimaryBtnText">#FFFFFF</color>
+    <color name="colorLineColor">#E0E3E7</color>
+
+    <!-- Dark Mode Theme -->
+    <color name="colorPrimaryDark">#4B39EF</color>
+    <color name="colorSecondaryDark">#39D2C0</color>
+    <color name="colorTertiaryDark">#EE8B60</color>
+    <color name="colorAlternateDark">#FF5963</color>
+    <color name="colorPrimaryBackgroundDark">#1A1F24</color>
+    <color name="colorSecondaryBackgroundDark">#101213</color>
+    <color name="colorPrimaryTextDark">#FFFFFF</color>
+    <color name="colorSecondaryTextDark">#95A1AC</color>
+    <color name="colorPrimaryBtnTextDark">#FFFFFF</color>
+    <color name="colorLineColorDark">#22282F</color>
 </resources>

@@ -8,75 +8,63 @@ import 'package:flutter/painting.dart';
 class ColorName {
   ColorName._();
 
-  /// MaterialColor:
-  ///   50: #FFF2ECE4
-  ///   100: #FFDFCFBB
-  ///   200: #FFCAAF8E
-  ///   300: #FFB58E60
-  ///   400: #FFA5763E
-  ///   500: #FF955E1C
-  ///   600: #FF8D5619
-  ///   700: #FF824C15
-  ///   800: #FF784211
-  ///   900: #FF673109
-  static const MaterialColor cinnamon = MaterialColor(
-    0xFF955E1C,
-    <int, Color>{
-      50: Color(0xFFF2ECE4),
-      100: Color(0xFFDFCFBB),
-      200: Color(0xFFCAAF8E),
-      300: Color(0xFFB58E60),
-      400: Color(0xFFA5763E),
-      500: Color(0xFF955E1C),
-      600: Color(0xFF8D5619),
-      700: Color(0xFF824C15),
-      800: Color(0xFF784211),
-      900: Color(0xFF673109),
-    },
-  );
+  /// Color: #FF5963
+  static const Color colorAlternate = Color(0xFFFF5963);
 
-  /// Color: #F5CB84
-  static const Color milkTea = Color(0xFFF5CB84);
+  /// Color: #FF5963
+  static const Color colorAlternateDark = Color(0xFFFF5963);
 
-  /// MaterialColor:
-  ///   50: #FFFBF2E5
-  ///   100: #FFF5DFBE
-  ///   200: #FFEFCA93
-  ///   300: #FFE9B568
-  ///   400: #FFE4A547
-  ///   500: #FFDF9527
-  ///   600: #FFDB8D23
-  ///   700: #FFD7821D
-  ///   800: #FFD27817
-  ///   900: #FFCA670E
-  static const MaterialColor yellowOcher = MaterialColor(
-    0xFFDF9527,
-    <int, Color>{
-      50: Color(0xFFFBF2E5),
-      100: Color(0xFFF5DFBE),
-      200: Color(0xFFEFCA93),
-      300: Color(0xFFE9B568),
-      400: Color(0xFFE4A547),
-      500: Color(0xFFDF9527),
-      600: Color(0xFFDB8D23),
-      700: Color(0xFFD7821D),
-      800: Color(0xFFD27817),
-      900: Color(0xFFCA670E),
-    },
-  );
+  /// Color: #E0E3E7
+  static const Color colorLineColor = Color(0xFFE0E3E7);
 
-  /// MaterialAccentColor:
-  ///   100: #FFFFE8E0
-  ///   200: #FFFFBCA3
-  ///   400: #FFFFA989
-  ///   700: #FFFF9E7A
-  static const MaterialAccentColor yellowOcherAccent = MaterialAccentColor(
-    0xFFFFBCA3,
-    <int, Color>{
-      100: Color(0xFFFFE8E0),
-      200: Color(0xFFFFBCA3),
-      400: Color(0xFFFFA989),
-      700: Color(0xFFFF9E7A),
-    },
-  );
+  /// Color: #22282F
+  static const Color colorLineColorDark = Color(0xFF22282F);
+
+  /// Color: #4B39EF
+  static const Color colorPrimary = Color(0xFF4B39EF);
+
+  /// Color: #F1F4F8
+  static const Color colorPrimaryBackground = Color(0xFFF1F4F8);
+
+  /// Color: #1A1F24
+  static const Color colorPrimaryBackgroundDark = Color(0xFF1A1F24);
+
+  /// Color: #FFFFFF
+  static const Color colorPrimaryBtnText = Color(0xFFFFFFFF);
+
+  /// Color: #FFFFFF
+  static const Color colorPrimaryBtnTextDark = Color(0xFFFFFFFF);
+
+  /// Color: #4B39EF
+  static const Color colorPrimaryDark = Color(0xFF4B39EF);
+
+  /// Color: #101213
+  static const Color colorPrimaryText = Color(0xFF101213);
+
+  /// Color: #FFFFFF
+  static const Color colorPrimaryTextDark = Color(0xFFFFFFFF);
+
+  /// Color: #39D2C0
+  static const Color colorSecondary = Color(0xFF39D2C0);
+
+  /// Color: #FFFFFF
+  static const Color colorSecondaryBackground = Color(0xFFFFFFFF);
+
+  /// Color: #101213
+  static const Color colorSecondaryBackgroundDark = Color(0xFF101213);
+
+  /// Color: #39D2C0
+  static const Color colorSecondaryDark = Color(0xFF39D2C0);
+
+  /// Color: #57636C
+  static const Color colorSecondaryText = Color(0xFF57636C);
+
+  /// Color: #95A1AC
+  static const Color colorSecondaryTextDark = Color(0xFF95A1AC);
+
+  /// Color: #EE8B60
+  static const Color colorTertiary = Color(0xFFEE8B60);
+
+  /// Color: #EE8B60
+  static const Color colorTertiaryDark = Color(0xFFEE8B60);
 }
