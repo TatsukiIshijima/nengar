@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nengar/text_style.dart';
 
 class NumberInputField extends StatelessWidget {
   final TextEditingController textEditingController;
@@ -10,9 +11,9 @@ class NumberInputField extends StatelessWidget {
   final Function(String)? onChanged;
   final Function(String)? onSubmitted;
 
-  const NumberInputField(
-    this.textEditingController, {
+  const NumberInputField({
     Key? key,
+    required this.textEditingController,
     this.focusNode,
     this.maxLines = 1,
     this.maxLength = 6,
@@ -38,9 +39,7 @@ class NumberInputField extends StatelessWidget {
       onEditingComplete: onEditingComplete?.call(),
       onChanged: (text) => onChanged?.call(text),
       onSubmitted: (text) => onSubmitted?.call(text),
-      style: const TextStyle(
-        fontSize: 24,
-      ),
+      style: bodyText1,
     );
   }
 }

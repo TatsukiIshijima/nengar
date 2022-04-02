@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:nengar/text_style.dart';
 import 'package:nengar/widgets/number_input_field.dart';
 
 class NumberEditPage extends StatelessWidget {
@@ -14,62 +15,114 @@ class NumberEditPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 24,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 48,
-                  ),
-                  child: const Text('今年の当選番号を入力しましょう'),
+        child: Container(
+          margin: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 16),
+                child: NumberEditPageHeader(
+                  title: '今年の当選番号を入力しましょう',
+                  subTitle: '１〜３等の当選番号を入力して\n「保存」を押してください。',
                 ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    bottom: 24,
-                  ),
-                  child: NumberInputSection(
-                    title: '１等（６けた）',
-                    textEditingController: _firstTextEditingController,
-                    maxLength: 6,
-                  ),
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+                child: NumberInputSection(
+                  title: '１等（６けた）',
+                  textEditingController: _firstTextEditingController,
+                  maxLength: 6,
                 ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    bottom: 24,
-                  ),
-                  child: NumberInputSection(
-                    title: '２等（下４けた）',
-                    textEditingController: _secondTextEditingController,
-                    maxLength: 4,
-                  ),
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+                child: NumberInputSection(
+                  title: '２等（下４けた）',
+                  textEditingController: _secondTextEditingController,
+                  maxLength: 4,
                 ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    bottom: 24,
-                  ),
-                  child: ThirdNumberInputSection(
-                    title: '３等（下２けた）',
-                    primaryTextEditingController:
-                        _thirdPrimaryTextEditingController,
-                    secondaryTextEditingController:
-                        _thirdSecondaryTextEditingController,
-                    tertiaryTextEditingController:
-                        _thirdTertiaryTextEditingController,
-                  ),
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+                child: ThirdNumberInputSection(
+                  title: '３等（下２けた）',
+                  primaryTextEditingController:
+                      _thirdPrimaryTextEditingController,
+                  secondaryTextEditingController:
+                      _thirdSecondaryTextEditingController,
+                  tertiaryTextEditingController:
+                      _thirdTertiaryTextEditingController,
                 ),
-                CupertinoButton(
-                  child: const Text('保存'),
-                  onPressed: () {},
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 48,
+                      child: CupertinoButton.filled(
+                        child: const Text(
+                          '保存',
+                          style: subTitle2,
+                        ),
+                        onPressed: () {},
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class NumberEditPageHeader extends StatelessWidget {
+  final String title;
+  final String subTitle;
+
+  const NumberEditPageHeader({
+    Key? key,
+    required this.title,
+    required this.subTitle,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: subTitle1,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+            child: Text(
+              subTitle,
+              textAlign: TextAlign.center,
+              style: subTitle2,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -89,21 +142,26 @@ class NumberInputSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Label(
-          text: title,
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        NumberInputField(
-          textEditingController,
-          maxLength: maxLength,
-        ),
-      ],
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
+            child: Text(
+              title,
+              style: subTitle1,
+            ),
+          ),
+          NumberInputField(
+            textEditingController: textEditingController,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -124,54 +182,33 @@ class ThirdNumberInputSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Label(
-          text: title,
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        NumberInputField(
-          primaryTextEditingController,
-          maxLength: 2,
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        NumberInputField(
-          secondaryTextEditingController,
-          maxLength: 2,
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        NumberInputField(
-          tertiaryTextEditingController,
-          maxLength: 2,
-        ),
-      ],
-    );
-  }
-}
-
-class Label extends StatelessWidget {
-  final String text;
-
-  const Label({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w700,
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
+            child: Text(
+              title,
+              style: subTitle1,
+            ),
+          ),
+          NumberInputField(
+            textEditingController: primaryTextEditingController,
+            maxLength: 2,
+          ),
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+            child: NumberInputField(
+              textEditingController: secondaryTextEditingController,
+              maxLength: 2,
+            ),
+          ),
+        ],
       ),
     );
   }
