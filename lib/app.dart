@@ -1,27 +1,23 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nengar/flavors.dart';
 import 'package:nengar/pages/number_recognize_page.dart';
+import 'package:nengar/theme.dart';
 
 class App extends StatelessWidget {
-  final CameraDescription camera;
-
   const App({
     Key? key,
-    required this.camera,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: F.title,
-      theme: const CupertinoThemeData(),
+      theme: nengarThemeData,
       home: _flavorBanner(
-        child: NumberRecognizePage(
-          camera: camera,
-        ),
+        // child: NumberEditPage(),
+        child: NumberRecognizePage(),
         show: kDebugMode,
       ),
     );
