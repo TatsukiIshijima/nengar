@@ -4,20 +4,20 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:nengar/main.dart';
+import 'package:nengar/widgets/camera_overlay_shape.dart';
 
 /**
  * https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/example/lib/vision_detector_views/camera_view.dart
+ * https://aakira.app/blog/2021/02/image-overlay/
  */
 
 class CameraView extends StatefulWidget {
-  final String title;
   final CustomPaint? customPaint;
   final Function(InputImage inputImage) onImage;
   final CameraLensDirection initialDirection;
 
   CameraView({
     Key? key,
-    required this.title,
     required this.onImage,
     this.customPaint,
     this.initialDirection = CameraLensDirection.back,
@@ -66,44 +66,34 @@ class _CameraViewState extends State<CameraView> {
   @override
   Widget build(BuildContext context) {
     if (_controller.value.isInitialized == false) {
-      return Container();
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
     }
 
-    final size = MediaQuery.of(context).size;
-
-    var scale = size.aspectRatio * _controller.value.aspectRatio;
-
-    if (scale < 1) scale = 1 / scale;
-
-    return Container(
-      color: Colors.black,
+    return AspectRatio(
+      aspectRatio: 1,
       child: Stack(
-        fit: StackFit.expand,
         children: [
-          Transform.scale(
-            scale: scale,
-            child: Center(
-              child: CameraPreview(_controller),
+          ClipRect(
+            child: Transform.scale(
+              scale: _controller.value.aspectRatio,
+              child: Center(
+                child: AspectRatio(
+                  aspectRatio: 1 / _controller.value.aspectRatio,
+                  child: CameraPreview(_controller),
+                ),
+              ),
             ),
           ),
-          if (widget.customPaint != null) widget.customPaint!,
-          Positioned(
-            bottom: 100,
-            left: 50,
-            right: 50,
-            child: CupertinoSlider(
-              value: zoomLevel,
-              min: minZoomLevel,
-              max: maxZoomLevel,
-              onChanged: (newSliderValue) {
-                setState(() {
-                  zoomLevel = newSliderValue;
-                  _controller.setZoomLevel(zoomLevel);
-                });
-              },
-              divisions: (maxZoomLevel - 1).toInt() < 1
-                  ? null
-                  : (maxZoomLevel - 1).toInt(),
+          Container(
+            decoration: const ShapeDecoration(
+              shape: CameraOverlayShape(
+                borderColor: Colors.white,
+                borderLength: 32,
+                borderRadius: 12,
+                borderWidth: 8,
+              ),
             ),
           ),
         ],
