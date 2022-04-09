@@ -45,7 +45,6 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   build_runner: ^2.1.8
-  flutter_flavorizr: ^2.1.2
   flutter_gen_runner: ^4.1.6
   flutter_lints: ^1.0.0
 
@@ -90,32 +89,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
-flavorizr:
-  app:
-    android:
-      flavorDimensions: "flavor-type"
-    ios:
-
-  flavors:
-    development:
-      app:
-        name: "Dev Nengar"
-
-      android:
-        applicationId: "com.tatsuki.nengar.dev"
-
-      ios:
-        bundleId: "com.tatsuki.nengar.dev"
-
-    production:
-      app:
-        name: "Nengar"
-
-      android:
-        applicationId: "com.tatsuki.nengar"
-      ios:
-        bundleId: "com.tatsuki.nengar"
 
 flutter_gen:
   output: lib/gen/
