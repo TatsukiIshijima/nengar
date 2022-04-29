@@ -4,24 +4,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:nengar/main.dart';
-import 'package:nengar/widgets/camera_overlay_shape.dart';
 
-/**
- * https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/packages/google_ml_kit/example/lib/vision_detector_views/text_detector_view.dart
- * https://aakira.app/blog/2021/02/image-overlay/
- */
+/// https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/packages/google_ml_kit/example/lib/vision_detector_views/text_detector_view.dart
 
 class CameraView extends StatefulWidget {
-  final CustomPaint? customPaint;
-  final Function(InputImage inputImage) onImage;
-  final CameraLensDirection initialDirection;
-
   CameraView({
     Key? key,
     required this.onImage,
+    this.text,
     this.customPaint,
     this.initialDirection = CameraLensDirection.back,
   }) : super(key: key);
+
+  final CustomPaint? customPaint;
+  final String? text;
+  final Function(InputImage inputImage) onImage;
+  final CameraLensDirection initialDirection;
 
   @override
   State<StatefulWidget> createState() => _CameraViewState();
@@ -70,41 +68,31 @@ class _CameraViewState extends State<CameraView> {
         child: CircularProgressIndicator(),
       );
     }
-    return AspectRatio(
-      aspectRatio: _calculateAspectRatio(),
+
+    final size = MediaQuery.of(context).size;
+    // スクリーンやカメラ比によるスケールの計算
+    // landscape として camera preview の size を受け取るので
+    // 実際には size.aspectRatio / (1 / camera.aspectRatio) の計算になるが
+    // portrait の計算なので以下になる
+    var scale = size.aspectRatio * _controller.value.aspectRatio;
+
+    if (scale < 1) scale = 1 / scale;
+
+    return Container(
+      color: Colors.black,
       child: Stack(
+        fit: StackFit.expand,
         children: [
-          ClipRect(
-            child: Transform.scale(
-              scale: _controller.value.aspectRatio,
-              child: Center(
-                child: AspectRatio(
-                  aspectRatio: 1 / _controller.value.aspectRatio,
-                  child: CameraPreview(_controller),
-                ),
-              ),
+          Transform.scale(
+            scale: scale,
+            child: Center(
+              child: CameraPreview(_controller),
             ),
           ),
-          Container(
-            decoration: const ShapeDecoration(
-              shape: CameraOverlayShape(
-                borderColor: Colors.white,
-                borderLength: 32,
-                borderRadius: 12,
-                borderWidth: 8,
-              ),
-            ),
-          ),
+          if (widget.customPaint != null) widget.customPaint!
         ],
       ),
     );
-  }
-
-  /// 端末の短辺に対してx倍したアスペクト比
-  double _calculateAspectRatio() {
-    final shortSide = _controller.value.previewSize?.height ?? 0;
-    final longSide = shortSide * 1.25;
-    return shortSide / longSide;
   }
 
   Future _startLiveFeed() async {
@@ -142,8 +130,7 @@ class _CameraViewState extends State<CameraView> {
     }
     final bytes = allBytes.done().buffer.asUint8List();
 
-    final Size imageSize =
-        Size(image.width.toDouble(), image.height.toDouble());
+    final imageSize = Size(image.width.toDouble(), image.height.toDouble());
 
     final camera = cameras[_cameraIndex];
     final imageRotation =
