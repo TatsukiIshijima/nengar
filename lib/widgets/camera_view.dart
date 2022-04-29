@@ -7,7 +7,7 @@ import 'package:nengar/main.dart';
 import 'package:nengar/widgets/camera_overlay_shape.dart';
 
 /**
- * https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/example/lib/vision_detector_views/camera_view.dart
+ * https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/packages/google_ml_kit/example/lib/vision_detector_views/text_detector_view.dart
  * https://aakira.app/blog/2021/02/image-overlay/
  */
 
@@ -70,9 +70,8 @@ class _CameraViewState extends State<CameraView> {
         child: CircularProgressIndicator(),
       );
     }
-
     return AspectRatio(
-      aspectRatio: 1,
+      aspectRatio: _calculateAspectRatio(),
       child: Stack(
         children: [
           ClipRect(
@@ -99,6 +98,13 @@ class _CameraViewState extends State<CameraView> {
         ],
       ),
     );
+  }
+
+  /// 端末の短辺に対してx倍したアスペクト比
+  double _calculateAspectRatio() {
+    final shortSide = _controller.value.previewSize?.height ?? 0;
+    final longSide = shortSide * 1.25;
+    return shortSide / longSide;
   }
 
   Future _startLiveFeed() async {
