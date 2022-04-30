@@ -20,7 +20,6 @@ class _NumberRecognizeState extends State<NumberRecognizePage> {
   TextDetectorV2 textDetector = GoogleMlKit.vision.textDetectorV2();
   bool _canProcess = true;
   bool _isBusy = false;
-  String? _text;
   CustomPaint? _customPaint;
 
   @override
@@ -34,51 +33,29 @@ class _NumberRecognizeState extends State<NumberRecognizePage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: SafeArea(
-        child: CameraView(
-          customPaint: _customPaint,
-          text: _text,
-          onImage: ((inputImage) {
-            recognizeTextFrom(inputImage);
-          }),
+        child: Stack(
+          children: [
+            CameraView(
+              customPaint: _customPaint,
+              onImage: ((inputImage) {
+                recognizeTextFrom(inputImage);
+              }),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.2,
+                color: const Color.fromRGBO(255, 255, 255, 0.7),
+                // TODO:変数化
+                child: const RecognizedWinResultSection(
+                  comment: 'ざんねん...',
+                  winResult: 'ハズレ',
+                ),
+              ),
+            ),
+          ],
         ),
-        // child: Column(
-        //   mainAxisSize: MainAxisSize.max,
-        //   crossAxisAlignment: CrossAxisAlignment.stretch,
-        //   children: [
-        //     CameraView(
-        //       onImage: (inputImage) {
-        //         recognizeTextFrom(inputImage);
-        //       },
-        //     ),
-        //     Expanded(
-        //       child: Padding(
-        //         padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
-        //         child: Column(
-        //           mainAxisSize: MainAxisSize.max,
-        //           mainAxisAlignment: MainAxisAlignment.center,
-        //           crossAxisAlignment: CrossAxisAlignment.center,
-        //           children: [
-        //             Padding(
-        //               padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-        //               child: RecognizedNumberResultSection(
-        //                 resultText: recognizedText,
-        //               ),
-        //             ),
-        //             Expanded(
-        //               child: Padding(
-        //                 padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
-        //                 child: RecognizedWinResultSection(
-        //                   comment: 'ざんねん...',
-        //                   winResult: 'ハズレ',
-        //                 ),
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // ),
       ),
     );
   }
@@ -87,9 +64,6 @@ class _NumberRecognizeState extends State<NumberRecognizePage> {
     if (!_canProcess) return;
     if (_isBusy) return;
     _isBusy = true;
-    setState(() {
-      _text = '';
-    });
     final recognisedText = await textDetector.processImage(
       inputImage,
       script: TextRecognitionOptions.DEVANAGIRI,
@@ -101,60 +75,12 @@ class _NumberRecognizeState extends State<NumberRecognizePage> {
       final painter = NumberDetectorPainter(recognizedText, size, rotation);
       _customPaint = CustomPaint(painter: painter);
     } else {
-      _text = 'Recognized text:\n\n${recognizedText.text}';
       _customPaint = null;
     }
     _isBusy = false;
     if (mounted) {
       setState(() {});
     }
-  }
-}
-
-class RecognizedNumberResultSection extends StatelessWidget {
-  final String resultText;
-
-  const RecognizedNumberResultSection({
-    Key? key,
-    required this.resultText,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-          child: Text(
-            '認識結果',
-            style: subTitle1,
-          ),
-        ),
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(
-              color: CupertinoDynamicColor.withBrightness(
-                color: Colors.black26,
-                darkColor: Colors.white,
-              ),
-              width: 1,
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 4),
-            child: Text(
-              resultText,
-              textAlign: TextAlign.center,
-              style: title1,
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }
 
