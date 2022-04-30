@@ -4,15 +4,16 @@ import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:nengar/model/RecognizedText.dart';
 import 'package:nengar/widgets/coordinates_translator.dart';
 
 /// https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/packages/google_ml_kit/example/lib/vision_detector_views/painters/text_detector_painter.dart
 
 class NumberDetectorPainter extends CustomPainter {
   NumberDetectorPainter(
-      this.recognisedText, this.absoluteImageSize, this.rotation);
+      this.recognizedText, this.absoluteImageSize, this.rotation);
 
-  final RecognisedText recognisedText;
+  final RecognizedText recognizedText;
   final Size absoluteImageSize;
   final InputImageRotation rotation;
 
@@ -25,7 +26,7 @@ class NumberDetectorPainter extends CustomPainter {
 
     final background = Paint()..color = Color(0x99000000);
 
-    for (final textBlock in recognisedText.blocks) {
+    for (final textBlock in recognizedText.blocks) {
       final builder = ParagraphBuilder(
         ParagraphStyle(
           textAlign: TextAlign.left,
@@ -70,6 +71,6 @@ class NumberDetectorPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(NumberDetectorPainter oldDelegate) {
-    return oldDelegate.recognisedText != recognisedText;
+    return oldDelegate.recognizedText != recognizedText;
   }
 }

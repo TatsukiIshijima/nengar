@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:nengar/extension/RecognisedTextExtension.dart';
+import 'package:nengar/model/RecognizedText.dart';
 import 'package:nengar/text_style.dart';
 import 'package:nengar/widgets/camera_view.dart';
+import 'package:nengar/widgets/number_detector_painter.dart';
 
 class NumberRecognizePage extends StatefulWidget {
   const NumberRecognizePage({
@@ -15,70 +18,93 @@ class NumberRecognizePage extends StatefulWidget {
 
 class _NumberRecognizeState extends State<NumberRecognizePage> {
   TextDetectorV2 textDetector = GoogleMlKit.vision.textDetectorV2();
-  bool isBusy = false;
+  bool _canProcess = true;
+  bool _isBusy = false;
+  String? _text;
+  CustomPaint? _customPaint;
 
   @override
   void dispose() async {
-    super.dispose();
+    _canProcess = false;
     await textDetector.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            CameraView(
-              onImage: (inputImage) {
-                processImage(inputImage);
-              },
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                      child: RecognizedNumberResultSection(
-                        resultText: '123456',
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
-                        child: RecognizedWinResultSection(
-                          comment: 'ざんねん...',
-                          winResult: 'ハズレ',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+        child: CameraView(
+          customPaint: _customPaint,
+          text: _text,
+          onImage: ((inputImage) {
+            recognizeTextFrom(inputImage);
+          }),
         ),
+        // child: Column(
+        //   mainAxisSize: MainAxisSize.max,
+        //   crossAxisAlignment: CrossAxisAlignment.stretch,
+        //   children: [
+        //     CameraView(
+        //       onImage: (inputImage) {
+        //         recognizeTextFrom(inputImage);
+        //       },
+        //     ),
+        //     Expanded(
+        //       child: Padding(
+        //         padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+        //         child: Column(
+        //           mainAxisSize: MainAxisSize.max,
+        //           mainAxisAlignment: MainAxisAlignment.center,
+        //           crossAxisAlignment: CrossAxisAlignment.center,
+        //           children: [
+        //             Padding(
+        //               padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+        //               child: RecognizedNumberResultSection(
+        //                 resultText: recognizedText,
+        //               ),
+        //             ),
+        //             Expanded(
+        //               child: Padding(
+        //                 padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+        //                 child: RecognizedWinResultSection(
+        //                   comment: 'ざんねん...',
+        //                   winResult: 'ハズレ',
+        //                 ),
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }
 
-  Future<void> processImage(InputImage inputImage) async {
-    if (isBusy) return;
-    isBusy = true;
+  Future<void> recognizeTextFrom(InputImage inputImage) async {
+    if (!_canProcess) return;
+    if (_isBusy) return;
+    _isBusy = true;
+    setState(() {
+      _text = '';
+    });
     final recognisedText = await textDetector.processImage(
       inputImage,
       script: TextRecognitionOptions.DEVANAGIRI,
     );
-    print('Found: ${recognisedText.blocks.length} textBlocks, '
-        '${recognisedText.text} resText');
-    isBusy = false;
+    final recognizedText = recognisedText.toRecognizedText().filteredByNumber();
+    final size = inputImage.inputImageData?.size;
+    final rotation = inputImage.inputImageData?.imageRotation;
+    if (size != null && rotation != null) {
+      final painter = NumberDetectorPainter(recognizedText, size, rotation);
+      _customPaint = CustomPaint(painter: painter);
+    } else {
+      _text = 'Recognized text:\n\n${recognizedText.text}';
+      _customPaint = null;
+    }
+    _isBusy = false;
     if (mounted) {
       setState(() {});
     }
