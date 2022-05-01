@@ -14,20 +14,46 @@ class NumberRecognizePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
       child: SafeArea(
-        child: RecognizePageBody(),
+        child: _RecognizePageBody(),
       ),
     );
   }
 }
 
-class RecognizePageBody extends StatefulWidget {
-  const RecognizePageBody({Key? key}) : super(key: key);
+class _RecognizePageBody extends StatelessWidget {
+  const _RecognizePageBody({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => RecognizePageState();
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        const _RecognizeCameraView(),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.2,
+            color: const Color.fromRGBO(255, 255, 255, 0.7),
+            // TODO:変数化
+            child: const _RecognizedWinResultSection(
+              comment: 'ざんねん...',
+              winResult: 'ハズレ',
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-class RecognizePageState extends State<RecognizePageBody> {
+class _RecognizeCameraView extends StatefulWidget {
+  const _RecognizeCameraView({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _RecognizeCameraViewState();
+}
+
+class _RecognizeCameraViewState extends State<_RecognizeCameraView> {
   final TextDetectorV2 _textDetector = GoogleMlKit.vision.textDetectorV2();
   bool _canProcess = true;
   bool _isBusy = false;
@@ -42,28 +68,11 @@ class RecognizePageState extends State<RecognizePageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        CameraView(
-          customPaint: _customPaint,
-          onImage: ((inputImage) {
-            _recognizeProcess(inputImage);
-          }),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.2,
-            color: const Color.fromRGBO(255, 255, 255, 0.7),
-            // TODO:変数化
-            child: const RecognizedWinResultSection(
-              comment: 'ざんねん...',
-              winResult: 'ハズレ',
-            ),
-          ),
-        ),
-      ],
+    return CameraView(
+      customPaint: _customPaint,
+      onImage: ((inputImage) {
+        _recognizeProcess(inputImage);
+      }),
     );
   }
 
@@ -97,11 +106,11 @@ class RecognizePageState extends State<RecognizePageBody> {
   }
 }
 
-class RecognizedWinResultSection extends StatelessWidget {
+class _RecognizedWinResultSection extends StatelessWidget {
   final String comment;
   final String winResult;
 
-  const RecognizedWinResultSection({
+  const _RecognizedWinResultSection({
     Key? key,
     required this.comment,
     required this.winResult,
