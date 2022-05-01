@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'ThirdWinNumbers.g.dart';
+part 'third_win_numbers.g.dart';
 
 @JsonSerializable()
 class ThirdWinNumbers {

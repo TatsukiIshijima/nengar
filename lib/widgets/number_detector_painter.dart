@@ -4,7 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:nengar/model/RecognizedText.dart';
+import 'package:nengar/model/recognized_text.dart';
 import 'package:nengar/widgets/coordinates_translator.dart';
 
 /// https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/packages/google_ml_kit/example/lib/vision_detector_views/painters/text_detector_painter.dart

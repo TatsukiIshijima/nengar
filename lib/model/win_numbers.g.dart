@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'WinNumbers.dart';
+part of 'win_numbers.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ThirdWinNumbers.dart';
+part of 'third_win_numbers.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

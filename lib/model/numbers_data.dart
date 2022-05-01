@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:nengar/model/WinNumbers.dart';
+import 'package:nengar/model/win_numbers.dart';
 
-part 'NumbersData.g.dart';
+part 'numbers_data.g.dart';
 
 @JsonSerializable()
 class NumbersData {

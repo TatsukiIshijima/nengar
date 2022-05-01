@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:nengar/extension/RecognisedTextExtension.dart';
-import 'package:nengar/model/RecognizedText.dart';
+import 'package:nengar/model/recognized_text.dart';
 import 'package:nengar/text_style.dart';
 import 'package:nengar/widgets/camera_view.dart';
 import 'package:nengar/widgets/number_detector_painter.dart';
