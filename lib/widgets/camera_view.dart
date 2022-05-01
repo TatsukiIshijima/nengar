@@ -8,7 +8,7 @@ import 'package:nengar/main.dart';
 /// https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/packages/google_ml_kit/example/lib/vision_detector_views/text_detector_view.dart
 
 class CameraView extends StatefulWidget {
-  CameraView({
+  const CameraView({
     Key? key,
     required this.onImage,
     this.customPaint,

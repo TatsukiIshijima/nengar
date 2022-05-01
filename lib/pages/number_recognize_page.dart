@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:nengar/extension/RecognisedTextExtension.dart';
 import 'package:nengar/model/RecognizedText.dart';
@@ -20,23 +21,34 @@ class NumberRecognizePage extends StatelessWidget {
   }
 }
 
-class _RecognizePageBody extends StatelessWidget {
+class _RecognizePageBody extends HookWidget {
   const _RecognizePageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final recognizeUseState = useState('');
+
     return Stack(
       children: [
-        const _RecognizeCameraView(),
+        _RecognizeCameraView(
+          onRecognized: (RecognizedText recognizedText) {
+            // iterable の first が IterableElementError を返すので早期リターン
+            if (recognizedText.blocks.isEmpty) {
+              recognizeUseState.value = '';
+              return;
+            }
+            recognizeUseState.value = recognizedText.blocks.first.text;
+          },
+        ),
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.2,
             color: const Color.fromRGBO(255, 255, 255, 0.7),
-            // TODO:変数化
-            child: const _RecognizedWinResultSection(
-              comment: 'ざんねん...',
+            child: _RecognizedWinResultSection(
+              comment: recognizeUseState.value,
+              // TODO:判定
               winResult: 'ハズレ',
             ),
           ),
@@ -47,7 +59,12 @@ class _RecognizePageBody extends StatelessWidget {
 }
 
 class _RecognizeCameraView extends StatefulWidget {
-  const _RecognizeCameraView({Key? key}) : super(key: key);
+  const _RecognizeCameraView({
+    Key? key,
+    required this.onRecognized,
+  }) : super(key: key);
+
+  final Function(RecognizedText recognizedText) onRecognized;
 
   @override
   State<StatefulWidget> createState() => _RecognizeCameraViewState();
@@ -81,20 +98,27 @@ class _RecognizeCameraViewState extends State<_RecognizeCameraView> {
     if (_isBusy) return;
 
     _isBusy = true;
-    await _paintRecognizedResultIfNeed(inputImage);
-    _isBusy = false;
-
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  Future<void> _paintRecognizedResultIfNeed(InputImage inputImage) async {
     final recognisedText = await _textDetector.processImage(
       inputImage,
       script: TextRecognitionOptions.DEVANAGIRI,
     );
     final recognizedText = recognisedText.toRecognizedText().filteredByNumber();
+    _paintRecognizedResultIfNeed(inputImage, recognizedText);
+    _isBusy = false;
+
+    if (mounted) {
+      setState(() {
+        if (_customPaint != null) {
+          widget.onRecognized(recognizedText);
+        }
+      });
+    }
+  }
+
+  void _paintRecognizedResultIfNeed(
+    InputImage inputImage,
+    RecognizedText recognizedText,
+  ) {
     final size = inputImage.inputImageData?.size;
     final rotation = inputImage.inputImageData?.imageRotation;
     if (size != null && rotation != null) {
