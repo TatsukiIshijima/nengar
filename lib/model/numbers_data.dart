@@ -6,11 +6,11 @@ part 'numbers_data.g.dart';
 @JsonSerializable()
 class NumbersData {
   NumbersData(
-    this.winningNumbers,
+    this.winNumbers,
     this.savedDateTime,
   );
 
-  final WinNumbers winningNumbers;
+  final WinNumbers winNumbers;
   final DateTime savedDateTime;
 
   factory NumbersData.fromJson(Map<String, dynamic> json) =>

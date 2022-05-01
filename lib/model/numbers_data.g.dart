@@ -13,6 +13,6 @@ NumbersData _$NumbersDataFromJson(Map<String, dynamic> json) => NumbersData(
 
 Map<String, dynamic> _$NumbersDataToJson(NumbersData instance) =>
     <String, dynamic>{
-      'winningNumbers': instance.winningNumbers,
+      'winningNumbers': instance.winNumbers,
       'savedDateTime': instance.savedDateTime.toIso8601String(),
     };
