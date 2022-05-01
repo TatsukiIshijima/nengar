@@ -7,17 +7,28 @@ import 'package:nengar/text_style.dart';
 import 'package:nengar/widgets/camera_view.dart';
 import 'package:nengar/widgets/number_detector_painter.dart';
 
-class NumberRecognizePage extends StatefulWidget {
-  const NumberRecognizePage({
-    Key? key,
-  }) : super(key: key);
+class NumberRecognizePage extends StatelessWidget {
+  const NumberRecognizePage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _NumberRecognizeState();
+  Widget build(BuildContext context) {
+    return const CupertinoPageScaffold(
+      child: SafeArea(
+        child: RecognizePageBody(),
+      ),
+    );
+  }
 }
 
-class _NumberRecognizeState extends State<NumberRecognizePage> {
-  TextDetectorV2 textDetector = GoogleMlKit.vision.textDetectorV2();
+class RecognizePageBody extends StatefulWidget {
+  const RecognizePageBody({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => RecognizePageState();
+}
+
+class RecognizePageState extends State<RecognizePageBody> {
+  final TextDetectorV2 _textDetector = GoogleMlKit.vision.textDetectorV2();
   bool _canProcess = true;
   bool _isBusy = false;
   CustomPaint? _customPaint;
@@ -25,46 +36,52 @@ class _NumberRecognizeState extends State<NumberRecognizePage> {
   @override
   void dispose() async {
     _canProcess = false;
-    await textDetector.close();
+    await _textDetector.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: SafeArea(
-        child: Stack(
-          children: [
-            CameraView(
-              customPaint: _customPaint,
-              onImage: ((inputImage) {
-                recognizeTextFrom(inputImage);
-              }),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.2,
-                color: const Color.fromRGBO(255, 255, 255, 0.7),
-                // TODO:変数化
-                child: const RecognizedWinResultSection(
-                  comment: 'ざんねん...',
-                  winResult: 'ハズレ',
-                ),
-              ),
-            ),
-          ],
+    return Stack(
+      children: [
+        CameraView(
+          customPaint: _customPaint,
+          onImage: ((inputImage) {
+            _recognizeProcess(inputImage);
+          }),
         ),
-      ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.2,
+            color: const Color.fromRGBO(255, 255, 255, 0.7),
+            // TODO:変数化
+            child: const RecognizedWinResultSection(
+              comment: 'ざんねん...',
+              winResult: 'ハズレ',
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  Future<void> recognizeTextFrom(InputImage inputImage) async {
+  Future<void> _recognizeProcess(InputImage inputImage) async {
     if (!_canProcess) return;
     if (_isBusy) return;
+
     _isBusy = true;
-    final recognisedText = await textDetector.processImage(
+    await _paintRecognizedResultIfNeed(inputImage);
+    _isBusy = false;
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  Future<void> _paintRecognizedResultIfNeed(InputImage inputImage) async {
+    final recognisedText = await _textDetector.processImage(
       inputImage,
       script: TextRecognitionOptions.DEVANAGIRI,
     );
@@ -76,10 +93,6 @@ class _NumberRecognizeState extends State<NumberRecognizePage> {
       _customPaint = CustomPaint(painter: painter);
     } else {
       _customPaint = null;
-    }
-    _isBusy = false;
-    if (mounted) {
-      setState(() {});
     }
   }
 }
