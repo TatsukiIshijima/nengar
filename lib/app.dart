@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_use/flutter_use.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nengar/datasource/numbers_datasouce.dart';
@@ -26,31 +27,41 @@ class App extends HookWidget {
 
     const env = String.fromEnvironment('FLAVOR');
 
-    final _router = GoRouter(routes: [
-      GoRoute(
-        path: AppRouter.splashPageRoutePath,
-        builder: (context, state) => SplashPage(
-          appRouter: _appRouter,
-          numbersDataSource: _numbersDataSource,
-        ),
+    final splashRoute = GoRoute(
+      path: AppRouter.splashPageRoutePath,
+      builder: (context, state) => SplashPage(
+        appRouter: _appRouter,
+        numbersDataSource: _numbersDataSource,
       ),
-      GoRoute(
-        path: AppRouter.numberEditPageRoutePath,
-        builder: (context, state) => NumberEditPage(),
-      ),
-      GoRoute(
+    );
+    final numberEditRoute = GoRoute(
+      path: AppRouter.numberEditPageRoutePath,
+      builder: (context, state) => NumberEditPage(),
+    );
+    final numberRecognizeRoute = GoRoute(
         path: AppRouter.numberRecognizePageRoutePath,
         builder: (context, state) => NumberRecognizePage(),
-      ),
-    ]);
+        routes: [
+          // TODO:共通化&パス設計
+          GoRoute(
+            path: 'edit',
+            builder: (context, state) => NumberEditPage(),
+          ),
+        ]);
 
-    return MaterialApp(
+    final _router = GoRouter(
+      routes: [
+        splashRoute,
+        numberEditRoute,
+        numberRecognizeRoute,
+      ],
+      initialLocation: AppRouter.splashPageRoutePath,
+    );
+
+    return PlatformApp(
       title: env,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: _flavorBanner(
-        child: MaterialApp.router(
+        child: PlatformApp.router(
           routeInformationParser: _router.routeInformationParser,
           routerDelegate: _router.routerDelegate,
         ),
@@ -66,18 +77,18 @@ class App extends HookWidget {
     const env = String.fromEnvironment('FLAVOR');
     return show
         ? Banner(
-      child: child,
-      location: BannerLocation.topStart,
-      message: env,
-      color: Colors.green.withOpacity(0.6),
-      textStyle: const TextStyle(
-          fontWeight: FontWeight.w700,
-          fontSize: 12.0,
-          letterSpacing: 1.0),
-      textDirection: TextDirection.ltr,
-    )
+            child: child,
+            location: BannerLocation.topStart,
+            message: env,
+            color: Colors.green.withOpacity(0.6),
+            textStyle: const TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 12.0,
+                letterSpacing: 1.0),
+            textDirection: TextDirection.ltr,
+          )
         : Container(
-      child: child,
-    );
+            child: child,
+          );
   }
 }
