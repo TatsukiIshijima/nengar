@@ -11,7 +11,7 @@ class RecognizedText {
 extension RecognizedTextExtension on RecognizedText {
   RecognizedText filteredByNumber() {
     final filteredBlocks =
-        blocks.where((block) => block.text.isNumber()).toList();
+        blocks.where((block) => block.text.isSixDigitsNumber()).toList();
     return RecognizedText(text, filteredBlocks);
   }
 }

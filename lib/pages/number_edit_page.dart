@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_use/flutter_use.dart';
+import 'package:nengar/extension/RegExpExtension.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
@@ -10,17 +12,14 @@ import 'package:nengar/usecase/save_numbers_usecase.dart';
 import 'package:nengar/widgets/number_input_field.dart';
 
 class NumberEditPage extends HookWidget {
-  NumberEditPage({
+  const NumberEditPage(
+    this._appRouter,
+    this._numbersRepository, {
     Key? key,
-    required this.appRouter,
-    required this.numbersRepository,
   }) : super(key: key);
 
-  final AppRouter appRouter;
-  final NumbersRepository numbersRepository;
-
-  late final LoadNumbersUseCase _loadNumbersUseCase;
-  late final SaveNumbersUseCase _saveNumbersUseCase;
+  final AppRouter _appRouter;
+  final NumbersRepository _numbersRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +32,12 @@ class NumberEditPage extends HookWidget {
     final thirdTertiaryTextEditingController =
         useTextEditingController(text: '');
 
-    useEffectOnce(() {
-      _loadNumbersUseCase = LoadNumbersUseCase(numbersRepository);
-      _saveNumbersUseCase =
-          SaveNumbersUseCase(context, appRouter, numbersRepository);
+    final loadUseCaseRef = useRef(LoadNumbersUseCase(_numbersRepository));
+    final saveUseCaseRef =
+        useRef(SaveNumbersUseCase(context, _appRouter, _numbersRepository));
 
-      _loadNumbersUseCase.execute().then((numbersData) {
+    useEffectOnce(() {
+      loadUseCaseRef.value.execute().then((numbersData) {
         final winNumbers = numbersData?.winNumbers;
         final thirdWinNumbers = winNumbers?.thirdWinNumbers;
         firstTextEditingController.text = winNumbers?.firstWinNumber ?? '';
@@ -51,6 +50,40 @@ class NumberEditPage extends HookWidget {
             thirdWinNumbers?.tertiaryWinNumber ?? '';
       });
     });
+
+    final firstValidate = useTextFormValidator(
+      validator: (value) => value.isNotEmpty && value.isSixDigitsNumber(),
+      controller: firstTextEditingController,
+      initialValue: false,
+    );
+    final secondValidate = useTextFormValidator(
+      validator: (value) => value.isNotEmpty && value.isFourDigitsNumber(),
+      controller: secondTextEditingController,
+      initialValue: false,
+    );
+    final thirdPrimaryValidate = useTextFormValidator(
+      validator: (value) => value.isNotEmpty && value.isTwoDigitsNumber(),
+      controller: thirdPrimaryTextEditingController,
+      initialValue: false,
+    );
+    final thirdSecondaryValidate = useTextFormValidator(
+      validator: (value) => value.isNotEmpty && value.isTwoDigitsNumber(),
+      controller: thirdSecondaryTextEditingController,
+      initialValue: false,
+    );
+    final thirdTertiaryValidate = useTextFormValidator(
+      validator: (value) => value.isNotEmpty && value.isTwoDigitsNumber(),
+      controller: thirdTertiaryTextEditingController,
+      initialValue: false,
+    );
+
+    final saveBtnBackgroundColor = firstValidate &&
+            secondValidate &&
+            thirdPrimaryValidate &&
+            thirdSecondaryValidate &&
+            thirdTertiaryValidate
+        ? Colors.blue
+        : Colors.black26;
 
     return PlatformScaffold(
       appBar: PlatformAppBar(
@@ -109,15 +142,38 @@ class NumberEditPage extends HookWidget {
                     child: Container(
                       width: double.infinity,
                       height: 48,
-                      child: CupertinoButton.filled(
+                      child: PlatformElevatedButton(
+                        onPressed: firstValidate &&
+                                secondValidate &&
+                                thirdPrimaryValidate &&
+                                thirdSecondaryValidate &&
+                                thirdTertiaryValidate
+                            ? () async {
+                                await saveUseCaseRef.value.execute(
+                                  firstTextEditingController.text,
+                                  secondTextEditingController.text,
+                                  thirdPrimaryTextEditingController.text,
+                                  thirdSecondaryTextEditingController.text,
+                                  thirdTertiaryTextEditingController.text,
+                                );
+                              }
+                            : null,
                         child: PlatformText(
                           '保存',
                           style: subTitle2,
                         ),
-                        onPressed: () {
-                          appRouter.goRecognizePage(context);
-                        },
-                        borderRadius: BorderRadius.circular(24),
+                        material: (_, __) => MaterialElevatedButtonData(
+                          style: ElevatedButton.styleFrom(
+                            primary: saveBtnBackgroundColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                          ),
+                        ),
+                        cupertino: (_, __) => CupertinoElevatedButtonData(
+                          borderRadius: BorderRadius.circular(24),
+                          color: saveBtnBackgroundColor,
+                        ),
                       ),
                     ),
                   ),
