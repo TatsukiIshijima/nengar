@@ -5,10 +5,12 @@ import 'package:flutter_use/flutter_use.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
+import 'package:nengar/usecase/load_numbers_usecase.dart';
+import 'package:nengar/usecase/save_numbers_usecase.dart';
 import 'package:nengar/widgets/number_input_field.dart';
 
 class NumberEditPage extends HookWidget {
-  const NumberEditPage({
+  NumberEditPage({
     Key? key,
     required this.appRouter,
     required this.numbersRepository,
@@ -16,6 +18,9 @@ class NumberEditPage extends HookWidget {
 
   final AppRouter appRouter;
   final NumbersRepository numbersRepository;
+
+  late final LoadNumbersUseCase _loadNumbersUseCase;
+  late final SaveNumbersUseCase _saveNumbersUseCase;
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +34,22 @@ class NumberEditPage extends HookWidget {
         useTextEditingController(text: '');
 
     useEffectOnce(() {
-      // 最初の１回のみ実行される
-      // TODO:ローカルから値の読み込み
-      firstTextEditingController.text = '1当賞！';
-      secondTextEditingController.text = '2当賞！';
-      thirdPrimaryTextEditingController.text = '3当賞！';
+      _loadNumbersUseCase = LoadNumbersUseCase(numbersRepository);
+      _saveNumbersUseCase =
+          SaveNumbersUseCase(context, appRouter, numbersRepository);
+
+      _loadNumbersUseCase.execute().then((numbersData) {
+        final winNumbers = numbersData?.winNumbers;
+        final thirdWinNumbers = winNumbers?.thirdWinNumbers;
+        firstTextEditingController.text = winNumbers?.firstWinNumber ?? '';
+        secondTextEditingController.text = winNumbers?.secondWinNumber ?? '';
+        thirdPrimaryTextEditingController.text =
+            thirdWinNumbers?.primaryWinNumber ?? '';
+        thirdSecondaryTextEditingController.text =
+            thirdWinNumbers?.secondaryWinNumber ?? '';
+        thirdTertiaryTextEditingController.text =
+            thirdWinNumbers?.tertiaryWinNumber ?? '';
+      });
     });
 
     return PlatformScaffold(
@@ -188,6 +204,7 @@ class NumberInputSection extends StatelessWidget {
           ),
           NumberInputField(
             textEditingController: textEditingController,
+            maxLength: maxLength,
           ),
         ],
       ),
@@ -234,6 +251,13 @@ class ThirdNumberInputSection extends StatelessWidget {
             padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
             child: NumberInputField(
               textEditingController: secondaryTextEditingController,
+              maxLength: 2,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+            child: NumberInputField(
+              textEditingController: tertiaryTextEditingController,
               maxLength: 2,
             ),
           ),
