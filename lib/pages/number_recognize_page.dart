@@ -6,9 +6,11 @@ import 'package:go_router/go_router.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:nengar/extension/RecognisedTextExtension.dart';
 import 'package:nengar/model/recognized_text.dart';
+import 'package:nengar/model/win_type.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
+import 'package:nengar/usecase/judge_numbers_usecase.dart';
 import 'package:nengar/widgets/camera_view.dart';
 import 'package:nengar/widgets/number_detector_painter.dart';
 
@@ -40,30 +42,44 @@ class NumberRecognizePage extends StatelessWidget {
           )
         ],
       ),
-      body: const SafeArea(
-        child: _RecognizePageBody(),
+      body: SafeArea(
+        child: _RecognizePageBody(_numbersRepository),
       ),
     );
   }
 }
 
 class _RecognizePageBody extends HookWidget {
-  const _RecognizePageBody({Key? key}) : super(key: key);
+  const _RecognizePageBody(this._numbersRepository, {Key? key})
+      : super(key: key);
+
+  final NumbersRepository _numbersRepository;
 
   @override
   Widget build(BuildContext context) {
-    final recognizeUseState = useState('');
+    final judgeUseCaseRef = useRef(JudgeNumbersUseCase(_numbersRepository));
+    final commentUseState = useState('');
+    final winResultUseState = useState('');
 
     return Stack(
       children: [
         _RecognizeCameraView(
-          onRecognized: (RecognizedText recognizedText) {
+          onRecognized: (RecognizedText recognizedText) async {
             // iterable の first が IterableElementError を返すので早期リターン
             if (recognizedText.blocks.isEmpty) {
-              recognizeUseState.value = '';
+              commentUseState.value = '';
+              winResultUseState.value = '';
               return;
             }
-            recognizeUseState.value = recognizedText.blocks.first.text;
+            final winType = await judgeUseCaseRef.value.execute(recognizedText);
+            if (winType == WinType.other) {
+              commentUseState.value = 'ざんねん...';
+            } else if (winType == WinType.none) {
+              commentUseState.value = '';
+            } else {
+              commentUseState.value = 'おめでとうございます！';
+            }
+            winResultUseState.value = winType.text;
           },
         ),
         Align(
@@ -73,9 +89,8 @@ class _RecognizePageBody extends HookWidget {
             height: MediaQuery.of(context).size.height * 0.2,
             color: const Color.fromRGBO(255, 255, 255, 0.7),
             child: _RecognizedWinResultSection(
-              comment: recognizeUseState.value,
-              // TODO:判定
-              winResult: 'ハズレ',
+              comment: commentUseState.value,
+              winResult: winResultUseState.value,
             ),
           ),
         ),
