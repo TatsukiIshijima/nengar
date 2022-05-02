@@ -9,6 +9,8 @@ import 'package:nengar/datasource/numbers_datasource_impl.dart';
 import 'package:nengar/pages/number_edit_page.dart';
 import 'package:nengar/pages/number_recognize_page.dart';
 import 'package:nengar/pages/splash_page.dart';
+import 'package:nengar/repository/numbers_repository.dart';
+import 'package:nengar/repository/numbers_repository_impl.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/router/app_router_impl.dart';
 
@@ -17,12 +19,14 @@ class App extends HookWidget {
 
   late AppRouter _appRouter;
   late NumbersDataSource _numbersDataSource;
+  late NumbersRepository _numbersRepository;
 
   @override
   Widget build(BuildContext context) {
     useEffectOnce(() {
       _appRouter = AppRouterImpl();
       _numbersDataSource = NumbersDataSourceImpl();
+      _numbersRepository = NumbersRepositoryImpl(_numbersDataSource);
     });
 
     const env = String.fromEnvironment('FLAVOR');
@@ -31,21 +35,21 @@ class App extends HookWidget {
       path: AppRouter.splashPageRoutePath,
       builder: (context, state) => SplashPage(
         appRouter: _appRouter,
-        numbersDataSource: _numbersDataSource,
+        numbersRepository: _numbersRepository,
       ),
     );
     final numberEditRoute = GoRoute(
       path: AppRouter.numberEditPageRoutePath,
       builder: (context, state) => NumberEditPage(
         appRouter: _appRouter,
-        numbersDataSource: _numbersDataSource,
+        numbersRepository: _numbersRepository,
       ),
     );
     final numberRecognizeRoute = GoRoute(
       path: AppRouter.numberRecognizePageRoutePath,
       builder: (context, state) => NumberRecognizePage(
         appRouter: _appRouter,
-        numbersDataSource: _numbersDataSource,
+        numbersRepository: _numbersRepository,
       ),
       routes: [
         // TODO:共通化&パス設計
@@ -53,7 +57,7 @@ class App extends HookWidget {
           path: 'edit',
           builder: (context, state) => NumberEditPage(
             appRouter: _appRouter,
-            numbersDataSource: _numbersDataSource,
+            numbersRepository: _numbersRepository,
           ),
         ),
       ],

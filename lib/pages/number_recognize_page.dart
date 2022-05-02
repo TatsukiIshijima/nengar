@@ -4,9 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:nengar/datasource/numbers_datasouce.dart';
 import 'package:nengar/extension/RecognisedTextExtension.dart';
 import 'package:nengar/model/recognized_text.dart';
+import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
 import 'package:nengar/widgets/camera_view.dart';
@@ -16,11 +16,11 @@ class NumberRecognizePage extends StatelessWidget {
   const NumberRecognizePage({
     Key? key,
     required this.appRouter,
-    required this.numbersDataSource,
+    required this.numbersRepository,
   }) : super(key: key);
 
   final AppRouter appRouter;
-  final NumbersDataSource numbersDataSource;
+  final NumbersRepository numbersRepository;
 
   @override
   Widget build(BuildContext context) {

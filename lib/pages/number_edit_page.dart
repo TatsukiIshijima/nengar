@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_use/flutter_use.dart';
-import 'package:nengar/datasource/numbers_datasouce.dart';
+import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
 import 'package:nengar/widgets/number_input_field.dart';
@@ -11,11 +11,11 @@ class NumberEditPage extends HookWidget {
   const NumberEditPage({
     Key? key,
     required this.appRouter,
-    required this.numbersDataSource,
+    required this.numbersRepository,
   }) : super(key: key);
 
   final AppRouter appRouter;
-  final NumbersDataSource numbersDataSource;
+  final NumbersRepository numbersRepository;
 
   @override
   Widget build(BuildContext context) {
