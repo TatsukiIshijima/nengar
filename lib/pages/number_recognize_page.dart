@@ -1,20 +1,46 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:nengar/datasource/numbers_datasouce.dart';
 import 'package:nengar/extension/RecognisedTextExtension.dart';
 import 'package:nengar/model/recognized_text.dart';
+import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
 import 'package:nengar/widgets/camera_view.dart';
 import 'package:nengar/widgets/number_detector_painter.dart';
 
 class NumberRecognizePage extends StatelessWidget {
-  const NumberRecognizePage({Key? key}) : super(key: key);
+  const NumberRecognizePage({
+    Key? key,
+    required this.appRouter,
+    required this.numbersDataSource,
+  }) : super(key: key);
+
+  final AppRouter appRouter;
+  final NumbersDataSource numbersDataSource;
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoPageScaffold(
-      child: SafeArea(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
+        title: PlatformText('認識画面'),
+        trailingActions: [
+          IconButton(
+            onPressed: () {
+              // FIXME:go_routerのサブルート遷移だと認識画面のカメラが止まらないので対応必要
+              GoRouter.of(context).go('/recognize/edit');
+            },
+            icon: const Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+          )
+        ],
+      ),
+      body: const SafeArea(
         child: _RecognizePageBody(),
       ),
     );

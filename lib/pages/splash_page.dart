@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_use/flutter_use.dart';
 import 'package:nengar/datasource/numbers_datasouce.dart';
 import 'package:nengar/router/app_router.dart';
@@ -38,9 +39,9 @@ class SplashPage extends HookWidget {
       initialize(context);
     });
 
-    return const CupertinoPageScaffold(
-      child: Center(
-        child: Text(
+    return PlatformScaffold(
+      body: Center(
+        child: PlatformText(
           'Splash $env',
         ),
       ),

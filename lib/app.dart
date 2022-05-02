@@ -36,18 +36,28 @@ class App extends HookWidget {
     );
     final numberEditRoute = GoRoute(
       path: AppRouter.numberEditPageRoutePath,
-      builder: (context, state) => NumberEditPage(),
+      builder: (context, state) => NumberEditPage(
+        appRouter: _appRouter,
+        numbersDataSource: _numbersDataSource,
+      ),
     );
     final numberRecognizeRoute = GoRoute(
-        path: AppRouter.numberRecognizePageRoutePath,
-        builder: (context, state) => NumberRecognizePage(),
-        routes: [
-          // TODO:共通化&パス設計
-          GoRoute(
-            path: 'edit',
-            builder: (context, state) => NumberEditPage(),
+      path: AppRouter.numberRecognizePageRoutePath,
+      builder: (context, state) => NumberRecognizePage(
+        appRouter: _appRouter,
+        numbersDataSource: _numbersDataSource,
+      ),
+      routes: [
+        // TODO:共通化&パス設計
+        GoRoute(
+          path: 'edit',
+          builder: (context, state) => NumberEditPage(
+            appRouter: _appRouter,
+            numbersDataSource: _numbersDataSource,
           ),
-        ]);
+        ),
+      ],
+    );
 
     final _router = GoRouter(
       routes: [
