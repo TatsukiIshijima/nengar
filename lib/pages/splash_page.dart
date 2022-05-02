@@ -7,24 +7,24 @@ import 'package:nengar/router/app_router.dart';
 import 'package:nengar/usecase/launch_usecase.dart';
 
 class SplashPage extends HookWidget {
-  SplashPage({
+  const SplashPage(
+    this._appRouter,
+    this._numbersRepository, {
     Key? key,
-    required this.appRouter,
-    required this.numbersRepository,
   }) : super(key: key);
 
-  final AppRouter appRouter;
-  final NumbersRepository numbersRepository;
-
-  late final LaunchUseCase _launchUseCase;
+  final AppRouter _appRouter;
+  final NumbersRepository _numbersRepository;
 
   @override
   Widget build(BuildContext context) {
     const env = String.fromEnvironment('FLAVOR');
 
+    final launchUseCaseRef =
+        useRef(LaunchUseCase(context, _appRouter, _numbersRepository));
+
     useEffectOnce(() {
-      _launchUseCase = LaunchUseCase(context, appRouter, numbersRepository);
-      _launchUseCase.execute();
+      launchUseCaseRef.value.execute();
       return null;
     });
 

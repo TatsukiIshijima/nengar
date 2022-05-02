@@ -13,14 +13,14 @@ import 'package:nengar/widgets/camera_view.dart';
 import 'package:nengar/widgets/number_detector_painter.dart';
 
 class NumberRecognizePage extends StatelessWidget {
-  const NumberRecognizePage({
+  const NumberRecognizePage(
+    this._appRouter,
+    this._numbersRepository, {
     Key? key,
-    required this.appRouter,
-    required this.numbersRepository,
   }) : super(key: key);
 
-  final AppRouter appRouter;
-  final NumbersRepository numbersRepository;
+  final AppRouter _appRouter;
+  final NumbersRepository _numbersRepository;
 
   @override
   Widget build(BuildContext context) {

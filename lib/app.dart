@@ -2,14 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:flutter_use/flutter_use.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nengar/datasource/numbers_datasouce.dart';
 import 'package:nengar/datasource/numbers_datasource_impl.dart';
 import 'package:nengar/pages/number_edit_page.dart';
 import 'package:nengar/pages/number_recognize_page.dart';
 import 'package:nengar/pages/splash_page.dart';
-import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/repository/numbers_repository_impl.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/router/app_router_impl.dart';
@@ -17,48 +14,35 @@ import 'package:nengar/router/app_router_impl.dart';
 class App extends HookWidget {
   App({Key? key}) : super(key: key);
 
-  late AppRouter _appRouter;
-  late NumbersDataSource _numbersDataSource;
-  late NumbersRepository _numbersRepository;
-
   @override
   Widget build(BuildContext context) {
-    useEffectOnce(() {
-      _appRouter = AppRouterImpl();
-      _numbersDataSource = NumbersDataSourceImpl();
-      _numbersRepository = NumbersRepositoryImpl(_numbersDataSource);
-    });
+    final appRouterRef = useRef(AppRouterImpl());
+    final numbersDataSourceRef = useRef(NumbersDataSourceImpl());
+    final numbersRepositoryRef =
+        useRef(NumbersRepositoryImpl(numbersDataSourceRef.value));
 
     const env = String.fromEnvironment('FLAVOR');
 
     final splashRoute = GoRoute(
       path: AppRouter.splashPageRoutePath,
-      builder: (context, state) => SplashPage(
-        appRouter: _appRouter,
-        numbersRepository: _numbersRepository,
-      ),
+      builder: (context, state) =>
+          SplashPage(appRouterRef.value, numbersRepositoryRef.value),
     );
     final numberEditRoute = GoRoute(
       path: AppRouter.numberEditPageRoutePath,
-      builder: (context, state) => NumberEditPage(
-        appRouter: _appRouter,
-        numbersRepository: _numbersRepository,
-      ),
+      builder: (context, state) =>
+          NumberEditPage(appRouterRef.value, numbersRepositoryRef.value),
     );
     final numberRecognizeRoute = GoRoute(
       path: AppRouter.numberRecognizePageRoutePath,
-      builder: (context, state) => NumberRecognizePage(
-        appRouter: _appRouter,
-        numbersRepository: _numbersRepository,
-      ),
+      builder: (context, state) =>
+          NumberRecognizePage(appRouterRef.value, numbersRepositoryRef.value),
       routes: [
         // TODO:共通化&パス設計
         GoRoute(
           path: 'edit',
-          builder: (context, state) => NumberEditPage(
-            appRouter: _appRouter,
-            numbersRepository: _numbersRepository,
-          ),
+          builder: (context, state) =>
+              NumberEditPage(appRouterRef.value, numbersRepositoryRef.value),
         ),
       ],
     );
