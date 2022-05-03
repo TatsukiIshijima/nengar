@@ -23,4 +23,14 @@
     <color name="colorSecondaryTextDark">#95A1AC</color>
     <color name="colorPrimaryBtnTextDark">#FFFFFF</color>
     <color name="colorLineColorDark">#22282F</color>
+
+    <color name="primaryColor">#ee220c</color>
+    <color name="primaryLightColor">#ff613c</color>
+    <color name="primaryDarkColor">#b30000</color>
+    <color name="secondaryColor">#eddf9d</color>
+    <color name="secondaryLightColor">#ffffce</color>
+    <color name="secondaryDarkColor">#baad6e</color>
+    <color name="primaryTextColor">#fff9d7</color>
+    <color name="secondaryTextColor">#ffffce</color>
+    <color name="backgroundLightColor">#eeeeee</color>
 </resources>

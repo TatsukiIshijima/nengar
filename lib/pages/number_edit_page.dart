@@ -77,14 +77,6 @@ class NumberEditPage extends HookWidget {
       initialValue: false,
     );
 
-    final saveBtnBackgroundColor = firstValidate &&
-            secondValidate &&
-            thirdPrimaryValidate &&
-            thirdSecondaryValidate &&
-            thirdTertiaryValidate
-        ? Colors.blue
-        : Colors.black26;
-
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: PlatformText(
@@ -160,11 +152,13 @@ class NumberEditPage extends HookWidget {
                             : null,
                         child: PlatformText(
                           '保存',
-                          style: subTitle2,
+                          style: subTitle2.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                         material: (_, __) => MaterialElevatedButtonData(
                           style: ElevatedButton.styleFrom(
-                            primary: saveBtnBackgroundColor,
+                            // primary: saveBtnBackgroundColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24),
                             ),
@@ -172,7 +166,7 @@ class NumberEditPage extends HookWidget {
                         ),
                         cupertino: (_, __) => CupertinoElevatedButtonData(
                           borderRadius: BorderRadius.circular(24),
-                          color: saveBtnBackgroundColor,
+                          // color: saveBtnBackgroundColor,
                         ),
                       ),
                     ),

@@ -10,6 +10,7 @@ import 'package:nengar/pages/splash_page.dart';
 import 'package:nengar/repository/numbers_repository_impl.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/router/app_router_impl.dart';
+import 'package:nengar/theme.dart';
 
 class App extends HookWidget {
   App({Key? key}) : super(key: key);
@@ -58,6 +59,16 @@ class App extends HookWidget {
 
     return PlatformApp(
       title: env,
+      material: (_, __) => MaterialAppData(
+        theme: nengarMaterialLightTheme,
+        darkTheme: nengarMaterialDarkTheme,
+        // FIXME:ダークモード対応
+        themeMode: ThemeMode.light,
+      ),
+      // FIXME: iOSテーマ対応
+      cupertino: (_, __) => CupertinoAppData(
+        theme: nengarCupertinoTheme,
+      ),
       home: _flavorBanner(
         child: PlatformApp.router(
           routeInformationParser: _router.routeInformationParser,

@@ -8,6 +8,9 @@ import 'package:flutter/painting.dart';
 class ColorName {
   ColorName._();
 
+  /// Color: #eeeeee
+  static const Color backgroundLightColor = Color(0xFFEEEEEE);
+
   /// Color: #FF5963
   static const Color colorAlternate = Color(0xFFFF5963);
 
@@ -67,4 +70,28 @@ class ColorName {
 
   /// Color: #EE8B60
   static const Color colorTertiaryDark = Color(0xFFEE8B60);
+
+  /// Color: #ee220c
+  static const Color primaryColor = Color(0xFFEE220C);
+
+  /// Color: #b30000
+  static const Color primaryDarkColor = Color(0xFFB30000);
+
+  /// Color: #ff613c
+  static const Color primaryLightColor = Color(0xFFFF613C);
+
+  /// Color: #fff9d7
+  static const Color primaryTextColor = Color(0xFFFFF9D7);
+
+  /// Color: #eddf9d
+  static const Color secondaryColor = Color(0xFFEDDF9D);
+
+  /// Color: #baad6e
+  static const Color secondaryDarkColor = Color(0xFFBAAD6E);
+
+  /// Color: #ffffce
+  static const Color secondaryLightColor = Color(0xFFFFFFCE);
+
+  /// Color: #ffffce
+  static const Color secondaryTextColor = Color(0xFFFFFFCE);
 }
