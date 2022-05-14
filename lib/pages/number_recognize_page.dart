@@ -85,12 +85,30 @@ class _RecognizePageBody extends HookWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
+            alignment: Alignment.bottomCenter,
             width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.2,
-            color: const Color.fromRGBO(255, 255, 255, 0.7),
-            child: _RecognizedWinResultSection(
-              comment: commentUseState.value,
-              winResult: winResultUseState.value,
+            height: MediaQuery.of(context).size.height * 0.3,
+            child: Column(
+              children: [
+                Container(
+                  color: const Color.fromRGBO(255, 255, 255, 0.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: const Text(
+                    'カメラをくじ番号にかざしてください',
+                    textAlign: TextAlign.center,
+                    style: subTitle2,
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    color: const Color.fromRGBO(255, 255, 255, 0.7),
+                    child: _RecognizedWinResultSection(
+                      comment: commentUseState.value,
+                      winResult: winResultUseState.value,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
