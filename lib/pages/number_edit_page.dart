@@ -80,7 +80,7 @@ class NumberEditPage extends HookWidget {
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: PlatformText(
-          '編集画面',
+          '当選番号設定',
         ),
       ),
       body: SafeArea(

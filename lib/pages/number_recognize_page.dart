@@ -28,7 +28,7 @@ class NumberRecognizePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PlatformScaffold(
       appBar: PlatformAppBar(
-        title: PlatformText('認識画面'),
+        title: PlatformText('年賀玉'),
         trailingActions: [
           IconButton(
             onPressed: () {
