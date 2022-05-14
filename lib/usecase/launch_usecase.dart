@@ -16,8 +16,8 @@ class LaunchUseCase {
   final NumbersRepository _numbersRepository;
 
   Future<void> execute() async {
-    Timer(const Duration(milliseconds: 2000), () async {
-      final numbersData = await _numbersRepository.load();
+    final numbersData = await _numbersRepository.load();
+    Timer(const Duration(milliseconds: 1500), () {
       if (numbersData == null) {
         _appRouter.goEditPage(_context);
         return;

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_use/flutter_use.dart';
+import 'package:nengar/gen/colors.gen.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/usecase/launch_usecase.dart';
@@ -29,10 +30,46 @@ class SplashPage extends HookWidget {
     });
 
     return PlatformScaffold(
-      body: Center(
-        child: PlatformText(
-          'Splash $env',
-        ),
+      body: Stack(
+        children: [
+          Row(
+            children: [
+              for (int i = 0; i < 10; i++)
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    color: i % 2 == 0
+                        ? ColorName.primaryTextColor
+                        : ColorName.secondaryColor,
+                  ),
+                ),
+            ],
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                FractionallySizedBox(
+                  widthFactor: 0.8,
+                  alignment: FractionalOffset.center,
+                  child: Image(
+                    image: AssetImage('assets/image/splash_img.png'),
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
+                Text(
+                  '年賀玉',
+                  style: TextStyle(
+                    color: ColorName.primaryColor,
+                    fontSize: 64,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
