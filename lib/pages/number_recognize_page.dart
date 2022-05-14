@@ -5,7 +5,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:nengar/extension/RecognisedTextExtension.dart';
-import 'package:nengar/model/recognized_text.dart';
+import 'package:nengar/model/recognized_text.dart' as model;
 import 'package:nengar/model/win_type.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
@@ -64,7 +64,7 @@ class _RecognizePageBody extends HookWidget {
     return Stack(
       children: [
         _RecognizeCameraView(
-          onRecognized: (RecognizedText recognizedText) async {
+          onRecognized: (model.RecognizedText recognizedText) async {
             // iterable の first が IterableElementError を返すので早期リターン
             if (recognizedText.blocks.isEmpty) {
               commentUseState.value = '';
@@ -105,14 +105,14 @@ class _RecognizeCameraView extends StatefulWidget {
     required this.onRecognized,
   }) : super(key: key);
 
-  final Function(RecognizedText recognizedText) onRecognized;
+  final Function(model.RecognizedText recognizedText) onRecognized;
 
   @override
   State<StatefulWidget> createState() => _RecognizeCameraViewState();
 }
 
 class _RecognizeCameraViewState extends State<_RecognizeCameraView> {
-  final TextDetectorV2 _textDetector = GoogleMlKit.vision.textDetectorV2();
+  final TextRecognizer _textRecognizer = TextRecognizer();
   bool _canProcess = true;
   bool _isBusy = false;
   CustomPaint? _customPaint;
@@ -120,7 +120,7 @@ class _RecognizeCameraViewState extends State<_RecognizeCameraView> {
   @override
   void dispose() async {
     _canProcess = false;
-    await _textDetector.close();
+    await _textRecognizer.close();
     super.dispose();
   }
 
@@ -139,10 +139,7 @@ class _RecognizeCameraViewState extends State<_RecognizeCameraView> {
     if (_isBusy) return;
 
     _isBusy = true;
-    final recognisedText = await _textDetector.processImage(
-      inputImage,
-      script: TextRecognitionOptions.DEVANAGIRI,
-    );
+    final recognisedText = await _textRecognizer.processImage(inputImage);
     final recognizedText = recognisedText.toRecognizedText().filteredByNumber();
     _paintRecognizedResultIfNeed(inputImage, recognizedText);
     _isBusy = false;
@@ -158,7 +155,7 @@ class _RecognizeCameraViewState extends State<_RecognizeCameraView> {
 
   void _paintRecognizedResultIfNeed(
     InputImage inputImage,
-    RecognizedText recognizedText,
+    model.RecognizedText recognizedText,
   ) {
     final size = inputImage.inputImageData?.size;
     final rotation = inputImage.inputImageData?.imageRotation;

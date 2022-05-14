@@ -4,7 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:nengar/model/recognized_text.dart';
+import 'package:nengar/model/recognized_text.dart' as model;
 import 'package:nengar/widgets/coordinates_translator.dart';
 
 /// https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/packages/google_ml_kit/example/lib/vision_detector_views/painters/text_detector_painter.dart
@@ -13,7 +13,7 @@ class NumberDetectorPainter extends CustomPainter {
   NumberDetectorPainter(
       this.recognizedText, this.absoluteImageSize, this.rotation);
 
-  final RecognizedText recognizedText;
+  final model.RecognizedText recognizedText;
   final Size absoluteImageSize;
   final InputImageRotation rotation;
 
@@ -43,14 +43,14 @@ class NumberDetectorPainter extends CustomPainter {
       builder.addText(textBlock.text);
       builder.pop();
 
-      final left =
-          translateX(textBlock.rect.left, rotation, size, absoluteImageSize);
-      final top =
-          translateY(textBlock.rect.top, rotation, size, absoluteImageSize);
-      final right =
-          translateX(textBlock.rect.right, rotation, size, absoluteImageSize);
-      final bottom =
-          translateY(textBlock.rect.bottom, rotation, size, absoluteImageSize);
+      final left = translateX(
+          textBlock.boundingBox.left, rotation, size, absoluteImageSize);
+      final top = translateY(
+          textBlock.boundingBox.top, rotation, size, absoluteImageSize);
+      final right = translateX(
+          textBlock.boundingBox.right, rotation, size, absoluteImageSize);
+      final bottom = translateY(
+          textBlock.boundingBox.bottom, rotation, size, absoluteImageSize);
 
       canvas.drawRect(
         Rect.fromLTRB(left, top, right, bottom),
