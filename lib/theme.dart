@@ -9,6 +9,7 @@ const CupertinoThemeData nengarCupertinoTheme = CupertinoThemeData(
 
 ThemeData nengarMaterialLightTheme = ThemeData(
   brightness: Brightness.light,
+  fontFamily: 'NotoSerifJP',
   primarySwatch: MaterialColor(
     ColorName.primaryColor.value,
     const <int, Color>{
@@ -40,5 +41,6 @@ ThemeData nengarMaterialLightTheme = ThemeData(
 
 // FIXME:ダークモード対応
 ThemeData nengarMaterialDarkTheme = ThemeData(
+  fontFamily: 'NotoSerifJP',
   brightness: Brightness.dark,
 );
