@@ -110,6 +110,6 @@ flutter_gen:
 flutter_icons:
   android: true
   ios: true
-  image_path: 'assets/drawable/app_icon.png'
-  adaptive_icon_background: 'assets/drawable/adaptive_icon_background.png'
-  adaptive_icon_foreground: 'assets/drawable/adaptive_icon_foreground.png'
+  image_path: 'assets/icon/app_icon.png'
+  adaptive_icon_background: 'assets/icon/adaptive_icon_background.png'
+  adaptive_icon_foreground: 'assets/icon/adaptive_icon_foreground.png'
