@@ -13,26 +13,56 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
+# 直接 gradlew を実行してしまうと dart-define で定義した flavor が Android 環境まで届かない
+# そのため、flutter コマンドからビルドを実行するようにしている
+
 default_platform(:android)
 
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
+  desc "Debug Development build"
+  lane :debug_development_build do
+    flutter_android_build(
+      build_type: "debug",
+      flavor: "development",
+      app_bundle: false
+    )
   end
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
+  desc "Release Development build"
+  lane :release_development_build do
+    flutter_android_build(
+      build_type: "release",
+      flavor: "development",
+      app_bundle: false
+    )
   end
 
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+  desc "Debug Production build"
+  lane :debug_production_build do
+    flutter_android_build(
+      build_type: "debug",
+      flavor: "production",
+      app_bundle: false
+    )
+  end
+
+  desc "Release Production build"
+  lane :release_production_build do
+    flutter_android_build(
+      build_type: "release",
+      flavor: "production",
+      app_bundle: true
+    )
+  end
+
+  desc "Flutter Android build lane"
+  lane :flutter_android_build do |options|
+    build_type = ["--", options[:build_type].downcase].join
+    flavor = ["--dart-define=FLAVOR=", options[:flavor].downcase].join
+
+    sh("fvm", "flutter", "build", "apk", build_type, flavor)
+    if options[:app_bundle]
+      sh("fvm", "flutter", "build", "appbundle", build_type, flavor)
+    end
   end
 end
