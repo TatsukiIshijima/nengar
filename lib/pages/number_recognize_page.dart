@@ -13,6 +13,7 @@ import 'package:nengar/text_style.dart';
 import 'package:nengar/usecase/judge_numbers_usecase.dart';
 import 'package:nengar/widgets/camera_view.dart';
 import 'package:nengar/widgets/number_detector_painter.dart';
+import 'package:nengar/widgets/win_numbers_overlay.dart';
 
 class NumberRecognizePage extends StatelessWidget {
   const NumberRecognizePage(
@@ -58,6 +59,7 @@ class _RecognizePageBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final judgeUseCaseRef = useRef(JudgeNumbersUseCase(_numbersRepository));
+    // FIXME:ViewModelみたなもの作った方が良い？
     final commentUseState = useState('');
     final winResultUseState = useState('');
 
@@ -90,6 +92,14 @@ class _RecognizePageBody extends HookWidget {
             height: MediaQuery.of(context).size.height * 0.3,
             child: Column(
               children: [
+                // TODO:可変化
+                const WinNumbersOverlay(
+                  firstWinNumber: "123456",
+                  secondWinNumber: "1234",
+                  thirdPrimaryWinNumber: "12",
+                  thirdSecondaryWinNumber: "34",
+                  thirdTertiaryWinNumber: "56",
+                ),
                 Container(
                   color: const Color.fromRGBO(255, 255, 255, 0.0),
                   padding: const EdgeInsets.symmetric(vertical: 16),
