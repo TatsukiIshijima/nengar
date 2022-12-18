@@ -9,7 +9,9 @@ import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
 import 'package:nengar/usecase/load_numbers_usecase.dart';
 import 'package:nengar/usecase/save_numbers_usecase.dart';
-import 'package:nengar/widgets/number_input_field.dart';
+import 'package:nengar/widgets/number_edit_page_header.dart';
+import 'package:nengar/widgets/number_input_section.dart';
+import 'package:nengar/widgets/third_number_input_section.dart';
 
 class NumberEditPage extends HookWidget {
   const NumberEditPage(
@@ -176,142 +178,6 @@ class NumberEditPage extends HookWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class NumberEditPageHeader extends StatelessWidget {
-  final String title;
-  final String subTitle;
-
-  const NumberEditPageHeader({
-    Key? key,
-    required this.title,
-    required this.subTitle,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
-            child: PlatformText(
-              title,
-              textAlign: TextAlign.center,
-              style: subTitle1,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-            child: PlatformText(
-              subTitle,
-              textAlign: TextAlign.center,
-              style: subTitle2,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class NumberInputSection extends StatelessWidget {
-  final String title;
-  final TextEditingController textEditingController;
-  final int maxLength;
-
-  const NumberInputSection({
-    Key? key,
-    required this.title,
-    required this.textEditingController,
-    required this.maxLength,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
-            child: PlatformText(
-              title,
-              style: subTitle1,
-            ),
-          ),
-          NumberInputField(
-            textEditingController: textEditingController,
-            maxLength: maxLength,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ThirdNumberInputSection extends StatelessWidget {
-  final String title;
-  final TextEditingController primaryTextEditingController;
-  final TextEditingController secondaryTextEditingController;
-  final TextEditingController tertiaryTextEditingController;
-
-  const ThirdNumberInputSection({
-    Key? key,
-    required this.title,
-    required this.primaryTextEditingController,
-    required this.secondaryTextEditingController,
-    required this.tertiaryTextEditingController,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
-            child: PlatformText(
-              title,
-              style: subTitle1,
-            ),
-          ),
-          NumberInputField(
-            textEditingController: primaryTextEditingController,
-            maxLength: 2,
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-            child: NumberInputField(
-              textEditingController: secondaryTextEditingController,
-              maxLength: 2,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-            child: NumberInputField(
-              textEditingController: tertiaryTextEditingController,
-              maxLength: 2,
-            ),
-          ),
-        ],
       ),
     );
   }
