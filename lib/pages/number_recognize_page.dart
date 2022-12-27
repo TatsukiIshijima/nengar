@@ -89,33 +89,42 @@ class _RecognizePageBody extends HookWidget {
           child: Container(
             alignment: Alignment.bottomCenter,
             width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: MediaQuery.of(context).size.height * 0.4,
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
-                // TODO:可変化
-                const WinNumbersOverlay(
-                  firstWinNumber: "123456",
-                  secondWinNumber: "1234",
-                  thirdPrimaryWinNumber: "12",
-                  thirdSecondaryWinNumber: "34",
-                  thirdTertiaryWinNumber: "56",
-                ),
                 Container(
                   color: const Color.fromRGBO(255, 255, 255, 0.0),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: const Text(
-                    'カメラをくじ番号にかざしてください',
-                    textAlign: TextAlign.center,
-                    style: subTitle2,
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // TODO:可変化
+                      WinNumbersOverlay(
+                        firstWinNumber: "123456",
+                        secondWinNumber: "1234",
+                        thirdPrimaryWinNumber: "12",
+                        thirdSecondaryWinNumber: "34",
+                        thirdTertiaryWinNumber: "56",
+                      ),
+                      const Text(
+                        'カメラをくじ番号にかざしてください',
+                        textAlign: TextAlign.center,
+                        style: subTitle2,
+                      ),
+                    ],
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    color: const Color.fromRGBO(255, 255, 255, 0.7),
-                    child: _RecognizedWinResultSection(
-                      comment: commentUseState.value,
-                      winResult: winResultUseState.value,
-                    ),
+                Container(
+                  color: const Color.fromRGBO(255, 255, 255, 0.7),
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  child: _RecognizedWinResultSection(
+                    comment: commentUseState.value,
+                    winResult: winResultUseState.value,
                   ),
                 ),
               ],

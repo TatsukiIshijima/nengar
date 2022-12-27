@@ -22,6 +22,8 @@ class WinNumbersOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _WinNumberRow(
           winNumberLabel: "１等",
@@ -34,7 +36,7 @@ class WinNumbersOverlay extends StatelessWidget {
         _WinNumberRow(
           winNumberLabel: "３等",
           winNumberText:
-              "$thirdPrimaryWinNumber, $thirdSecondaryWinNumber, $thirdTertiaryWinNumber",
+          "$thirdPrimaryWinNumber, $thirdSecondaryWinNumber, $thirdTertiaryWinNumber",
         )
       ],
     );
@@ -54,6 +56,7 @@ class _WinNumberRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         NumberLabel(
