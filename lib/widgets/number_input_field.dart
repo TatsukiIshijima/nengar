@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:nengar/gen/colors.gen.dart';
 import 'package:nengar/text_style.dart';
 
 class NumberInputField extends StatelessWidget {
@@ -25,24 +25,26 @@ class NumberInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformTextField(
-      material: (_, __) => MaterialTextFieldData(),
-      cupertino: (_, __) => CupertinoTextFieldData(),
+    return TextFormField(
       controller: textEditingController,
       focusNode: focusNode,
-      // decoration: BoxDecoration(
-      //   border: Border.all(color: Colors.black),
-      //   borderRadius: const BorderRadius.all(
-      //     Radius.circular(4),
-      //   ),
-      // ),
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: ColorName.colorLineColorDark,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        contentPadding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
+      ),
       keyboardType: TextInputType.number,
       maxLines: maxLines,
       maxLength: maxLength,
       onEditingComplete: onEditingComplete?.call(),
       onChanged: (text) => onChanged?.call(text),
-      onSubmitted: (text) => onSubmitted?.call(text),
-      style: bodyText1,
+      onFieldSubmitted: (text) => onSubmitted?.call(text),
+      style: title3,
     );
   }
 }
