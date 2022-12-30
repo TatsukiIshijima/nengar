@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_use/flutter_use.dart';
@@ -32,7 +33,7 @@ class NumberRecognizePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PlatformScaffold(
       appBar: PlatformAppBar(
-        title: PlatformText('年賀玉'),
+        title: PlatformText(AppLocalizations.of(context)!.appName),
         trailingActions: [
           IconButton(
             onPressed: () {
@@ -105,8 +106,9 @@ class _RecognizePageBody extends HookWidget {
                       WinNumbersOverlay(
                         uiModel: winNumbersUseState.value,
                       ),
-                      const Text(
-                        'カメラをくじ番号にかざしてください',
+                      Text(
+                        AppLocalizations.of(context)!
+                            .recognizePageCameraOperationHint,
                         textAlign: TextAlign.center,
                         style: subTitle2,
                       ),

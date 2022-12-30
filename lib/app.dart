@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nengar/datasource/numbers_datasource_impl.dart';
@@ -58,16 +58,6 @@ class App extends HookWidget {
       initialLocation: AppRouter.splashPageRoutePath,
     );
 
-    final localizationDelegates = [
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ];
-
-    final supportedLocaled = [
-      const Locale('ja', ''),
-    ];
-
     return PlatformApp(
       title: env,
       material: (_, __) => MaterialAppData(
@@ -75,19 +65,23 @@ class App extends HookWidget {
         darkTheme: nengarMaterialDarkTheme,
         // FIXME:ダークモード対応
         themeMode: ThemeMode.light,
-        localizationsDelegates: localizationDelegates,
-        supportedLocales: supportedLocaled,
+        locale: const Locale('ja'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
       ),
       // FIXME: iOSテーマ対応
       cupertino: (_, __) => CupertinoAppData(
         theme: nengarCupertinoTheme,
-        localizationsDelegates: localizationDelegates,
-        supportedLocales: supportedLocaled,
+        locale: const Locale('ja'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
       ),
       home: _flavorBanner(
         child: PlatformApp.router(
           routeInformationParser: router.routeInformationParser,
           routerDelegate: router.routerDelegate,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
         ),
         show: kDebugMode,
       ),

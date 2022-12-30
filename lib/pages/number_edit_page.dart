@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_use/flutter_use.dart';
@@ -85,9 +86,7 @@ class NumberEditPage extends HookWidget {
 
     return PlatformScaffold(
       appBar: PlatformAppBar(
-        title: PlatformText(
-          '当選番号設定',
-        ),
+        title: PlatformText(AppLocalizations.of(context)!.editPageTitle),
       ),
       body: SafeArea(
         child: Center(
@@ -100,17 +99,19 @@ class NumberEditPage extends HookWidget {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 32),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 32),
                     child: NumberEditPageHeader(
-                      title: '今年の当選番号を入力しましょう',
-                      subTitle: '１〜３等の当選番号を入力して\n「保存」を押してください。',
+                      title: AppLocalizations.of(context)!.editPageHeaderTitle,
+                      subTitle:
+                          AppLocalizations.of(context)!.editPageHeaderSubTitle,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
                     child: NumberInputSection(
-                      title: '１等（６けた）',
+                      title: AppLocalizations.of(context)!
+                          .editPageFirstNumberSectionTitle,
                       textEditingController: firstTextEditingController,
                       maxLength: 6,
                     ),
@@ -118,7 +119,8 @@ class NumberEditPage extends HookWidget {
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
                     child: NumberInputSection(
-                      title: '２等（下４けた）',
+                      title: AppLocalizations.of(context)!
+                          .editPageSecondNumberSectionTitle,
                       textEditingController: secondTextEditingController,
                       maxLength: 4,
                     ),
@@ -126,7 +128,8 @@ class NumberEditPage extends HookWidget {
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
                     child: ThirdNumberInputSection(
-                      title: '３等（下２けた）',
+                      title: AppLocalizations.of(context)!
+                          .editPageThirdNumberSectionTitle,
                       primaryTextEditingController:
                           thirdPrimaryTextEditingController,
                       secondaryTextEditingController:
@@ -155,7 +158,7 @@ class NumberEditPage extends HookWidget {
                               }
                             : null,
                         child: PlatformText(
-                          '保存',
+                          AppLocalizations.of(context)!.editPageSaveButtonLabel,
                           style: subTitle2.copyWith(
                             color: Colors.white,
                           ),

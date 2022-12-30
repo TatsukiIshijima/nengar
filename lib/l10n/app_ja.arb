@@ -1,3 +1,13 @@
 {
-  "helloWorld": "こんにちは、世界"
+  "appName": "年賀玉",
+
+  "recognizePageCameraOperationHint": "カメラをくじ番号にかざしてください",
+
+  "editPageTitle": "当選番号設定",
+  "editPageHeaderTitle": "今年の当選番号を入力しましょう",
+  "editPageHeaderSubTitle": "１〜３等の当選番号を入力して\n「保存」を押してください。",
+  "editPageFirstNumberSectionTitle": "１等（６けた）",
+  "editPageSecondNumberSectionTitle": "２等（下４けた）",
+  "editPageThirdNumberSectionTitle": "３等（下２けた）",
+  "editPageSaveButtonLabel": "保存"
 }
