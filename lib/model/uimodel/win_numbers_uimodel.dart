@@ -1,13 +1,13 @@
 import 'package:nengar/model/numbers_data.dart';
 
-class WinNumbersOverlayUiModel {
+class WinNumbersUiModel {
   final String firstWinNumber;
   final String secondWinNumber;
   final String thirdPrimaryWinNumber;
   final String thirdSecondaryWinNumber;
   final String thirdTertiaryWinNumber;
 
-  WinNumbersOverlayUiModel(
+  WinNumbersUiModel(
     this.firstWinNumber,
     this.secondWinNumber,
     this.thirdPrimaryWinNumber,
@@ -15,10 +15,10 @@ class WinNumbersOverlayUiModel {
     this.thirdTertiaryWinNumber,
   );
 
-  factory WinNumbersOverlayUiModel.from(NumbersData numbersData) {
+  factory WinNumbersUiModel.from(NumbersData numbersData) {
     final winNumbers = numbersData.winNumbers;
     final thirdWinNumbers = winNumbers.thirdWinNumbers;
-    return WinNumbersOverlayUiModel(
+    return WinNumbersUiModel(
       winNumbers.firstWinNumber,
       winNumbers.secondWinNumber,
       thirdWinNumbers.primaryWinNumber,
@@ -27,8 +27,8 @@ class WinNumbersOverlayUiModel {
     );
   }
 
-  factory WinNumbersOverlayUiModel.empty() {
-    return WinNumbersOverlayUiModel(
+  factory WinNumbersUiModel.empty() {
+    return WinNumbersUiModel(
       '',
       '',
       '',
