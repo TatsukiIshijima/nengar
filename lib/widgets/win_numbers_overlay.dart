@@ -1,22 +1,15 @@
 import 'package:flutter/widgets.dart';
+import 'package:nengar/model/uimodel/win_numbers_overlay_uimodel.dart';
 import 'package:nengar/text_style.dart';
 import 'package:nengar/widgets/number_label.dart';
 import 'package:nengar/widgets/number_text.dart';
 
 class WinNumbersOverlay extends StatelessWidget {
-  final String firstWinNumber;
-  final String secondWinNumber;
-  final String thirdPrimaryWinNumber;
-  final String thirdSecondaryWinNumber;
-  final String thirdTertiaryWinNumber;
+  final WinNumbersOverlayUiModel uiModel;
 
   const WinNumbersOverlay({
     Key? key,
-    required this.firstWinNumber,
-    required this.secondWinNumber,
-    required this.thirdPrimaryWinNumber,
-    required this.thirdSecondaryWinNumber,
-    required this.thirdTertiaryWinNumber,
+    required this.uiModel,
   }) : super(key: key);
 
   @override
@@ -27,16 +20,17 @@ class WinNumbersOverlay extends StatelessWidget {
       children: [
         _WinNumberRow(
           winNumberLabel: "１等",
-          winNumberText: firstWinNumber,
+          winNumberText: uiModel.firstWinNumber,
         ),
         _WinNumberRow(
           winNumberLabel: "２等",
-          winNumberText: secondWinNumber,
+          winNumberText: uiModel.secondWinNumber,
         ),
         _WinNumberRow(
           winNumberLabel: "３等",
-          winNumberText:
-          "$thirdPrimaryWinNumber, $thirdSecondaryWinNumber, $thirdTertiaryWinNumber",
+          winNumberText: "${uiModel.thirdPrimaryWinNumber}, "
+              "${uiModel.thirdSecondaryWinNumber}, "
+              "${uiModel.thirdTertiaryWinNumber}",
         )
       ],
     );
