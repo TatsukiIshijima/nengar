@@ -9,6 +9,10 @@ class JudgeNumbersUseCase {
   final NumbersRepository _numbersRepository;
 
   Future<WinType> execute(RecognizedText recognizeText) async {
+    if (recognizeText.blocks.isEmpty) {
+      return WinType.none;
+    }
+
     final localNumbersData = await _numbersRepository.load();
     final localFirstWinNumber =
         localNumbersData?.winNumbers.firstWinNumber ?? '';
