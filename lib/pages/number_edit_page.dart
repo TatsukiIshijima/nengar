@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_use/flutter_use.dart';
 import 'package:nengar/extension/RegExpExtension.dart';
+import 'package:nengar/model/uimodel/win_numbers_uimodel.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
@@ -39,17 +40,14 @@ class NumberEditPage extends HookWidget {
         useRef(SaveNumbersUseCase(context, _appRouter, _numbersRepository));
 
     useEffectOnce(() {
-      loadUseCaseRef.value.execute().then((numbersData) {
-        final winNumbers = numbersData?.winNumbers;
-        final thirdWinNumbers = winNumbers?.thirdWinNumbers;
-        firstTextEditingController.text = winNumbers?.firstWinNumber ?? '';
-        secondTextEditingController.text = winNumbers?.secondWinNumber ?? '';
-        thirdPrimaryTextEditingController.text =
-            thirdWinNumbers?.primaryWinNumber ?? '';
+      loadUseCaseRef.value.execute().then((uiModel) {
+        firstTextEditingController.text = uiModel.firstWinNumber;
+        secondTextEditingController.text = uiModel.secondWinNumber;
+        thirdPrimaryTextEditingController.text = uiModel.thirdPrimaryWinNumber;
         thirdSecondaryTextEditingController.text =
-            thirdWinNumbers?.secondaryWinNumber ?? '';
+            uiModel.thirdSecondaryWinNumber;
         thirdTertiaryTextEditingController.text =
-            thirdWinNumbers?.tertiaryWinNumber ?? '';
+            uiModel.thirdTertiaryWinNumber;
       });
     });
 
@@ -78,6 +76,12 @@ class NumberEditPage extends HookWidget {
       controller: thirdTertiaryTextEditingController,
       initialValue: false,
     );
+
+    bool isSavable = firstValidate &&
+        secondValidate &&
+        thirdPrimaryValidate &&
+        thirdSecondaryValidate &&
+        thirdTertiaryValidate;
 
     return PlatformScaffold(
       appBar: PlatformAppBar(
@@ -137,18 +141,16 @@ class NumberEditPage extends HookWidget {
                       width: double.infinity,
                       height: 48,
                       child: PlatformElevatedButton(
-                        onPressed: firstValidate &&
-                                secondValidate &&
-                                thirdPrimaryValidate &&
-                                thirdSecondaryValidate &&
-                                thirdTertiaryValidate
+                        onPressed: isSavable
                             ? () async {
                                 await saveUseCaseRef.value.execute(
-                                  firstTextEditingController.text,
-                                  secondTextEditingController.text,
-                                  thirdPrimaryTextEditingController.text,
-                                  thirdSecondaryTextEditingController.text,
-                                  thirdTertiaryTextEditingController.text,
+                                  WinNumbersUiModel(
+                                    firstTextEditingController.text,
+                                    secondTextEditingController.text,
+                                    thirdPrimaryTextEditingController.text,
+                                    thirdSecondaryTextEditingController.text,
+                                    thirdTertiaryTextEditingController.text,
+                                  ),
                                 );
                               }
                             : null,

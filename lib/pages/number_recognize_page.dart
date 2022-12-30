@@ -2,15 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:flutter_use/flutter_use.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:nengar/extension/RecognisedTextExtension.dart';
 import 'package:nengar/model/recognized_text.dart' as model;
-import 'package:nengar/model/win_type.dart';
+import 'package:nengar/model/uimodel/win_numbers_uimodel.dart';
+import 'package:nengar/model/uimodel/win_result_uimodel.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
 import 'package:nengar/usecase/judge_numbers_usecase.dart';
+import 'package:nengar/usecase/load_numbers_usecase.dart';
 import 'package:nengar/widgets/camera_view.dart';
 import 'package:nengar/widgets/number_detector_painter.dart';
 import 'package:nengar/widgets/win_numbers_overlay.dart';
@@ -59,29 +62,26 @@ class _RecognizePageBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final judgeUseCaseRef = useRef(JudgeNumbersUseCase(_numbersRepository));
-    // FIXME:ViewModelみたなもの作った方が良い？
-    final commentUseState = useState('');
-    final winResultUseState = useState('');
+    final loadNumbersUseCaseRef =
+        useRef(LoadNumbersUseCase(_numbersRepository));
+
+    final winResultUseState = useState(WinResultUiModel.empty());
+    final winNumbersUseState = useState(WinNumbersUiModel.empty());
+
+    // FIXME:初回のみなので戻ってきた時に更新されない
+    useEffectOnce(() {
+      loadNumbersUseCaseRef.value.execute().then((uiModel) {
+        winNumbersUseState.value = uiModel;
+      });
+      return;
+    });
 
     return Stack(
       children: [
         _RecognizeCameraView(
           onRecognized: (model.RecognizedText recognizedText) async {
-            // iterable の first が IterableElementError を返すので早期リターン
-            if (recognizedText.blocks.isEmpty) {
-              commentUseState.value = '';
-              winResultUseState.value = '';
-              return;
-            }
             final winType = await judgeUseCaseRef.value.execute(recognizedText);
-            if (winType == WinType.other) {
-              commentUseState.value = 'ざんねん...';
-            } else if (winType == WinType.none) {
-              commentUseState.value = '';
-            } else {
-              commentUseState.value = 'おめでとうございます！';
-            }
-            winResultUseState.value = winType.text;
+            winResultUseState.value = WinResultUiModel.from(winType);
           },
         ),
         Align(
@@ -102,13 +102,8 @@ class _RecognizePageBody extends HookWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // TODO:可変化
                       WinNumbersOverlay(
-                        firstWinNumber: "123456",
-                        secondWinNumber: "1234",
-                        thirdPrimaryWinNumber: "12",
-                        thirdSecondaryWinNumber: "34",
-                        thirdTertiaryWinNumber: "56",
+                        uiModel: winNumbersUseState.value,
                       ),
                       const Text(
                         'カメラをくじ番号にかざしてください',
@@ -123,8 +118,7 @@ class _RecognizePageBody extends HookWidget {
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: _RecognizedWinResultSection(
-                    comment: commentUseState.value,
-                    winResult: winResultUseState.value,
+                    uiModel: winResultUseState.value,
                   ),
                 ),
               ],
@@ -206,13 +200,11 @@ class _RecognizeCameraViewState extends State<_RecognizeCameraView> {
 }
 
 class _RecognizedWinResultSection extends StatelessWidget {
-  final String comment;
-  final String winResult;
+  final WinResultUiModel uiModel;
 
   const _RecognizedWinResultSection({
     Key? key,
-    required this.comment,
-    required this.winResult,
+    required this.uiModel,
   }) : super(key: key);
 
   @override
@@ -223,12 +215,12 @@ class _RecognizedWinResultSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          comment,
+          uiModel.commentText,
           textAlign: TextAlign.center,
           style: bodyText1,
         ),
         Text(
-          winResult,
+          uiModel.winTypeText,
           textAlign: TextAlign.center,
           style: title1,
         ),
