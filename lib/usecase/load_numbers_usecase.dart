@@ -1,4 +1,4 @@
-import 'package:nengar/model/numbers_data.dart';
+import 'package:nengar/model/uimodel/win_numbers_uimodel.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 
 class LoadNumbersUseCase {
@@ -6,7 +6,12 @@ class LoadNumbersUseCase {
 
   final NumbersRepository _numbersRepository;
 
-  Future<NumbersData?> execute() async {
-    return await _numbersRepository.load();
+  Future<WinNumbersUiModel> execute() async {
+    final numbersData = await _numbersRepository.load();
+    if (numbersData == null) {
+      return WinNumbersUiModel.empty();
+    } else {
+      return WinNumbersUiModel.from(numbersData);
+    }
   }
 }
