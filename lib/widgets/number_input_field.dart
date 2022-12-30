@@ -29,6 +29,13 @@ class NumberInputField extends StatelessWidget {
       controller: textEditingController,
       focusNode: focusNode,
       decoration: InputDecoration(
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: ColorName.colorLineColorDark,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(4),
+        ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(
             color: ColorName.colorLineColorDark,
