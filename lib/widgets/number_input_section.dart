@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:nengar/gen/assets.gen.dart';
 import 'package:nengar/widgets/number_input_field.dart';
 import 'package:nengar/widgets/number_label.dart';
 
@@ -25,10 +26,23 @@ class NumberInputSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 4),
-              child: NumberLabel(
-                label: title,
-              )),
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image(
+                  image: Assets.image.targetImg,
+                  width: 32,
+                  height: 32,
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(width: 4),
+                NumberLabel(label: title),
+              ],
+            ),
+          ),
           NumberInputField(
             textEditingController: textEditingController,
             maxLength: maxLength,
