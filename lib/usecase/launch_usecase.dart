@@ -22,6 +22,12 @@ class LaunchUseCase {
         _appRouter.goEditPage(_context);
         return;
       }
+      final savedYear = numbersData.savedDateTime.year;
+      final nowYear = DateTime.now().toUtc().year;
+      if (nowYear > savedYear) {
+        _appRouter.goEditPage(_context);
+        return;
+      }
       _appRouter.goRecognizePage(_context);
     });
   }
