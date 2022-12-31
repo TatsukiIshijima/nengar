@@ -10,6 +10,10 @@ class $AssetsImageGen {
   /// File path: assets/image/splash_img.png
   AssetGenImage get splashImg =>
       const AssetGenImage('assets/image/splash_img.png');
+
+  /// File path: assets/image/target_img.png
+  AssetGenImage get targetImg =>
+      const AssetGenImage('assets/image/target_img.png');
 }
 
 class Assets {
