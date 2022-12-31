@@ -9,7 +9,8 @@ class AppRouterImpl extends AppRouter {
   }
 
   @override
-  void goRecognizePage(BuildContext context) {
-    GoRouter.of(context).go(AppRouter.numberRecognizePageRoutePath);
+  void goRecognizePage(BuildContext context, {bool forceUpdate = false}) {
+    GoRouter.of(context).go(
+        '${AppRouter.numberRecognizePageRoutePath}?${AppRouter.forceUpdateQuery}=$forceUpdate');
   }
 }

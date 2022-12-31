@@ -27,20 +27,31 @@ class App extends HookWidget {
 
     final splashRoute = GoRoute(
       path: AppRouter.splashPageRoutePath,
-      builder: (context, state) =>
-          SplashPage(appRouterRef.value, numbersRepositoryRef.value),
+      builder: (context, state) => SplashPage(
+        appRouterRef.value,
+        numbersRepositoryRef.value,
+      ),
     );
     final numberEditRoute = GoRoute(
       path: AppRouter.numberEditPageRoutePath,
-      builder: (context, state) =>
-          NumberEditPage(appRouterRef.value, numbersRepositoryRef.value),
+      builder: (context, state) => NumberEditPage(
+        appRouterRef.value,
+        numbersRepositoryRef.value,
+      ),
     );
     final numberRecognizeRoute = GoRoute(
       path: AppRouter.numberRecognizePageRoutePath,
-      builder: (context, state) =>
-          NumberRecognizePage(appRouterRef.value, numbersRepositoryRef.value),
+      builder: (context, state) {
+        final forceUpdateQuery =
+            state.queryParams[AppRouter.forceUpdateQuery] ?? 'false';
+        final forceUpdate = forceUpdateQuery.toLowerCase() == 'true';
+        return NumberRecognizePage(
+          appRouterRef.value,
+          numbersRepositoryRef.value,
+          forceUpdate,
+        );
+      },
       routes: [
-        // TODO:共通化&パス設計
         GoRoute(
           path: 'edit',
           builder: (context, state) =>
