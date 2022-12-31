@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:flutter_use/flutter_use.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:nengar/extension/RecognisedTextExtension.dart';
 import 'package:nengar/model/recognized_text.dart' as model;
@@ -21,12 +20,14 @@ import 'package:nengar/widgets/win_numbers_overlay.dart';
 class NumberRecognizePage extends StatelessWidget {
   const NumberRecognizePage(
     this._appRouter,
-    this._numbersRepository, {
+    this._numbersRepository,
+    this._forceUpdate, {
     Key? key,
   }) : super(key: key);
 
   final AppRouter _appRouter;
   final NumbersRepository _numbersRepository;
+  final bool _forceUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -47,17 +48,24 @@ class NumberRecognizePage extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: _RecognizePageBody(_numbersRepository),
+        child: _RecognizePageBody(
+          _numbersRepository,
+          _forceUpdate,
+        ),
       ),
     );
   }
 }
 
 class _RecognizePageBody extends HookWidget {
-  const _RecognizePageBody(this._numbersRepository, {Key? key})
-      : super(key: key);
+  const _RecognizePageBody(
+    this._numbersRepository,
+    this._forceUpdate, {
+    Key? key,
+  }) : super(key: key);
 
   final NumbersRepository _numbersRepository;
+  final bool _forceUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -68,13 +76,15 @@ class _RecognizePageBody extends HookWidget {
     final winResultUseState = useState(WinResultUiModel.empty());
     final winNumbersUseState = useState(WinNumbersUiModel.empty());
 
-    // FIXME:初回のみなので戻ってきた時に更新されない
-    useEffectOnce(() {
-      loadNumbersUseCaseRef.value.execute().then((uiModel) {
-        winNumbersUseState.value = uiModel;
-      });
-      return;
-    });
+    useEffect(
+      () {
+        loadNumbersUseCaseRef.value.execute().then((uiModel) {
+          winNumbersUseState.value = uiModel;
+        });
+        return;
+      },
+      [_forceUpdate],
+    );
 
     return Stack(
       children: [

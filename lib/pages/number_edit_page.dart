@@ -40,7 +40,10 @@ class NumberEditPage extends HookWidget {
                 PlatformText(AppLocalizations.of(context)!.positiveButtonLabel),
             onPressed: () {
               Navigator.of(context, rootNavigator: true).pop();
-              _appRouter.goRecognizePage(context);
+              _appRouter.goRecognizePage(
+                context,
+                forceUpdate: true,
+              );
             },
           )
         ],
