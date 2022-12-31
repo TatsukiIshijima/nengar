@@ -5,7 +5,7 @@ import 'package:nengar/router/app_router.dart';
 class AppRouterImpl extends AppRouter {
   @override
   void goEditPage(BuildContext context) {
-    GoRouter.of(context).go(AppRouter.numberEditPageRoutePath);
+    GoRouter.of(context).go(AppRouter.goEditRoutePath);
   }
 
   @override

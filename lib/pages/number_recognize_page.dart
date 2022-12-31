@@ -4,7 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_use/flutter_use.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:nengar/extension/RecognisedTextExtension.dart';
 import 'package:nengar/model/recognized_text.dart' as model;
@@ -38,7 +37,7 @@ class NumberRecognizePage extends StatelessWidget {
           IconButton(
             onPressed: () {
               // FIXME:go_routerのサブルート遷移だと認識画面のカメラが止まらないので対応必要
-              GoRouter.of(context).go('/recognize/edit');
+              _appRouter.goEditPage(context);
             },
             icon: const Icon(
               Icons.settings,

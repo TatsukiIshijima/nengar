@@ -8,4 +8,7 @@ abstract class AppRouter {
   static const splashPageRoutePath = '/';
   static const numberEditPageRoutePath = '/edit';
   static const numberRecognizePageRoutePath = '/recognize';
+
+  static const goEditRoutePath =
+      '$numberRecognizePageRoutePath$numberEditPageRoutePath';
 }
