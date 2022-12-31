@@ -104,7 +104,7 @@ class _RecognizePageBody extends HookWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Container(
-                  color: const Color.fromRGBO(255, 255, 255, 0.0),
+                  color: const Color.fromRGBO(0, 0, 0, 0.25),
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: Column(
@@ -115,17 +115,17 @@ class _RecognizePageBody extends HookWidget {
                       WinNumbersOverlay(
                         uiModel: winNumbersUseState.value,
                       ),
-                      Text(
+                      PlatformText(
                         AppLocalizations.of(context)!
                             .recognizePageCameraOperationHint,
                         textAlign: TextAlign.center,
-                        style: subTitle2,
+                        style: subTitle1.copyWith(color: Colors.white),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  color: const Color.fromRGBO(255, 255, 255, 0.7),
+                  color: const Color.fromRGBO(255, 255, 255, 1.0),
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: _RecognizedWinResultSection(
@@ -225,12 +225,12 @@ class _RecognizedWinResultSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
+        PlatformText(
           uiModel.commentText,
           textAlign: TextAlign.center,
-          style: bodyText1,
+          style: title3,
         ),
-        Text(
+        PlatformText(
           uiModel.winTypeText,
           textAlign: TextAlign.center,
           style: title1,

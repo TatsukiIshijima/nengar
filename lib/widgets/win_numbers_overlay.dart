@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nengar/model/uimodel/win_numbers_uimodel.dart';
 import 'package:nengar/text_style.dart';
@@ -55,14 +56,14 @@ class _WinNumberRow extends StatelessWidget {
       children: [
         NumberLabel(
           label: winNumberLabel,
-          textStyle: subTitle2,
+          textStyle: subTitle1.copyWith(color: Colors.white),
         ),
         const SizedBox(
           width: 8,
         ),
         NumberText(
           text: winNumberText,
-          textStyle: subTitle2,
+          textStyle: subTitle1.copyWith(color: Colors.white),
         ),
       ],
     );
