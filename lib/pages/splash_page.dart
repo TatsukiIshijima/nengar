@@ -8,6 +8,7 @@ import 'package:nengar/gen/colors.gen.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/usecase/launch_usecase.dart';
+import 'package:nengar/widgets/background.dart';
 
 class SplashPage extends HookWidget {
   const SplashPage(
@@ -32,46 +33,31 @@ class SplashPage extends HookWidget {
     });
 
     return PlatformScaffold(
-      body: Stack(
-        children: [
-          Row(
+      body: Background(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              for (int i = 0; i < 10; i++)
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    color: i % 2 == 0
-                        ? ColorName.primaryTextColor
-                        : ColorName.secondaryColor,
-                  ),
+              FractionallySizedBox(
+                widthFactor: 0.8,
+                alignment: FractionalOffset.center,
+                child: Image(
+                  image: Assets.image.splashImg,
+                  fit: BoxFit.fitWidth,
                 ),
+              ),
+              Text(
+                AppLocalizations.of(context)?.appName ?? '',
+                style: const TextStyle(
+                  color: ColorName.primaryColor,
+                  fontSize: 64,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FractionallySizedBox(
-                  widthFactor: 0.8,
-                  alignment: FractionalOffset.center,
-                  child: Image(
-                    image: Assets.image.splashImg,
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-                Text(
-                  AppLocalizations.of(context)?.appName ?? '',
-                  style: const TextStyle(
-                    color: ColorName.primaryColor,
-                    fontSize: 64,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
