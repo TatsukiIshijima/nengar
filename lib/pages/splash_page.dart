@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_use/flutter_use.dart';
+import 'package:nengar/gen/assets.gen.dart';
 import 'package:nengar/gen/colors.gen.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
@@ -51,11 +52,11 @@ class SplashPage extends HookWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const FractionallySizedBox(
+                FractionallySizedBox(
                   widthFactor: 0.8,
                   alignment: FractionalOffset.center,
                   child: Image(
-                    image: AssetImage('assets/image/splash_img.png'),
+                    image: Assets.image.splashImg,
                     fit: BoxFit.fitWidth,
                   ),
                 ),

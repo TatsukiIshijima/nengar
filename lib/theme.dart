@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nengar/gen/colors.gen.dart';
+import 'package:nengar/gen/fonts.gen.dart';
 
 // FIXME: iOSテーマ対応
 const CupertinoThemeData nengarCupertinoTheme = CupertinoThemeData(
@@ -9,7 +10,7 @@ const CupertinoThemeData nengarCupertinoTheme = CupertinoThemeData(
 
 ThemeData nengarMaterialLightTheme = ThemeData(
   brightness: Brightness.light,
-  fontFamily: 'NotoSerifJP',
+  fontFamily: FontFamily.notoSerifJP,
   primarySwatch: MaterialColor(
     ColorName.primaryColor.value,
     const <int, Color>{
@@ -41,6 +42,6 @@ ThemeData nengarMaterialLightTheme = ThemeData(
 
 // FIXME:ダークモード対応
 ThemeData nengarMaterialDarkTheme = ThemeData(
-  fontFamily: 'NotoSerifJP',
+  fontFamily: FontFamily.notoSerifJP,
   brightness: Brightness.dark,
 );
