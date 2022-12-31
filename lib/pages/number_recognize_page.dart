@@ -13,6 +13,7 @@ import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
 import 'package:nengar/usecase/judge_numbers_usecase.dart';
 import 'package:nengar/usecase/load_numbers_usecase.dart';
+import 'package:nengar/widgets/background.dart';
 import 'package:nengar/widgets/camera_view.dart';
 import 'package:nengar/widgets/number_detector_painter.dart';
 import 'package:nengar/widgets/win_numbers_overlay.dart';
@@ -104,7 +105,7 @@ class _RecognizePageBody extends HookWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Container(
-                  color: const Color.fromRGBO(0, 0, 0, 0.25),
+                  color: Colors.black.withAlpha(64),
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: Column(
@@ -125,7 +126,7 @@ class _RecognizePageBody extends HookWidget {
                   ),
                 ),
                 Container(
-                  color: const Color.fromRGBO(255, 255, 255, 1.0),
+                  color: Colors.white,
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: _RecognizedWinResultSection(
@@ -220,22 +221,15 @@ class _RecognizedWinResultSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        PlatformText(
-          uiModel.commentText,
-          textAlign: TextAlign.center,
-          style: title3,
-        ),
-        PlatformText(
-          uiModel.winTypeText,
-          textAlign: TextAlign.center,
-          style: title1,
-        ),
-      ],
+    return Background(
+      child: Center(
+        child: uiModel.resultImage != null
+            ? Image(
+                image: uiModel.resultImage!,
+                fit: BoxFit.fitHeight,
+              )
+            : Container(),
+      ),
     );
   }
 }
