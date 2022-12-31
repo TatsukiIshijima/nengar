@@ -7,6 +7,10 @@ import 'package:flutter/widgets.dart';
 class $AssetsImageGen {
   const $AssetsImageGen();
 
+  /// File path: assets/image/other_img.png
+  AssetGenImage get otherImg =>
+      const AssetGenImage('assets/image/other_img.png');
+
   /// File path: assets/image/splash_img.png
   AssetGenImage get splashImg =>
       const AssetGenImage('assets/image/splash_img.png');
@@ -14,6 +18,18 @@ class $AssetsImageGen {
   /// File path: assets/image/target_img.png
   AssetGenImage get targetImg =>
       const AssetGenImage('assets/image/target_img.png');
+
+  /// File path: assets/image/win_first_img.png
+  AssetGenImage get winFirstImg =>
+      const AssetGenImage('assets/image/win_first_img.png');
+
+  /// File path: assets/image/win_second_img.png
+  AssetGenImage get winSecondImg =>
+      const AssetGenImage('assets/image/win_second_img.png');
+
+  /// File path: assets/image/win_third_img.png
+  AssetGenImage get winThirdImg =>
+      const AssetGenImage('assets/image/win_third_img.png');
 }
 
 class Assets {
