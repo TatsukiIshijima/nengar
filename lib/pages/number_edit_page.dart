@@ -25,6 +25,29 @@ class NumberEditPage extends HookWidget {
   final AppRouter _appRouter;
   final NumbersRepository _numbersRepository;
 
+  void _showSuccessDialog(BuildContext context) {
+    showPlatformDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => PlatformAlertDialog(
+        title: PlatformText(
+            AppLocalizations.of(context)!.editPageSaveSuccessDialogTitle),
+        content: PlatformText(
+            AppLocalizations.of(context)!.editPageSaveSuccessDialogContent),
+        actions: [
+          PlatformDialogAction(
+            child:
+                PlatformText(AppLocalizations.of(context)!.positiveButtonLabel),
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+              _appRouter.goRecognizePage(context);
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final firstTextEditingController = useTextEditingController(text: '');
@@ -37,8 +60,7 @@ class NumberEditPage extends HookWidget {
         useTextEditingController(text: '');
 
     final loadUseCaseRef = useRef(LoadNumbersUseCase(_numbersRepository));
-    final saveUseCaseRef =
-        useRef(SaveNumbersUseCase(context, _appRouter, _numbersRepository));
+    final saveUseCaseRef = useRef(SaveNumbersUseCase(_numbersRepository));
 
     useEffectOnce(() {
       loadUseCaseRef.value.execute().then((uiModel) {
@@ -154,6 +176,7 @@ class NumberEditPage extends HookWidget {
                                     thirdSecondaryTextEditingController.text,
                                     thirdTertiaryTextEditingController.text,
                                   ),
+                                  () => _showSuccessDialog(context),
                                 );
                               }
                             : null,

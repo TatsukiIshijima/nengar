@@ -1,5 +1,6 @@
 {
   "appName": "年賀玉",
+  "positiveButtonLabel": "OK",
 
   "recognizePageCameraOperationHint": "カメラをくじ番号にかざしてください",
 
@@ -9,5 +10,8 @@
   "editPageFirstNumberSectionTitle": "１等（６けた）",
   "editPageSecondNumberSectionTitle": "２等（下４けた）",
   "editPageThirdNumberSectionTitle": "３等（下２けた）",
-  "editPageSaveButtonLabel": "保存"
+  "editPageSaveButtonLabel": "保存",
+
+  "editPageSaveSuccessDialogTitle": "保存しました",
+  "editPageSaveSuccessDialogContent": "当選番号はいつでも変更できます。"
 }
