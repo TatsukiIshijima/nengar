@@ -5,7 +5,7 @@
 # 開発環境
 Flutter のバージョン管理に [fvm](https://github.com/fluttertools/fvm) を使用しています。
 
-[![Flutter](https://img.shields.io/badge/Flutter-2.16.1-aqua.svg)](https://developer.apple.com/jp/xcode/)
+[![Flutter](https://img.shields.io/badge/Flutter-3.0.0-aqua.svg)](https://developer.apple.com/jp/xcode/)
 
 # ライブラリ
 
