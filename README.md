@@ -3,6 +3,7 @@
 年賀状のお年玉番号を認識するアプリ
 
 # 開発環境
+Flutter のバージョン管理に [fvm](https://github.com/fluttertools/fvm) を使用しています。
 
 [![Flutter](https://img.shields.io/badge/Flutter-2.16.1-aqua.svg)](https://developer.apple.com/jp/xcode/)
 
@@ -35,6 +36,27 @@
 | production | 製品用 |
 
 # ビルド
+
+## 文言管理
+
+flutter_localizations を使用して文言を管理しています。 lib/l10n/app_ja.arb が実際に使用する文言を管理しているファイルです。
+文言を追加する場合はこちらのファイルに追記して以下コマンドを実行します。実行すると .dart_tool/flutter_gen/gen_l10n/app_localizations_ja.dart
+が 生成or編集されます。
+
+```
+fvm flutter gen-l10n
+```
+
+## リソース管理
+
+flutter_gen を使用してアセットやカラー、フォントなどリソースを管理しています。リソースを管理しているファイルは lib/gen に出力されるよう pubspec.yaml
+に設定しています。 リソース類は assets フォルダにまとめています。新たに追加した場合は以下コマンドを実行します。
+
+```
+fvm flutter packages pub run build_runner build
+```
+
+## iOS
 
 ## Android
 
