@@ -15,3 +15,6 @@ keystore.properties
 
 # bundler
 /vendor
+
+# fastlane
+/fastlane/report.xml
