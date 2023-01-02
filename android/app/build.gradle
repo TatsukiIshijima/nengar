@@ -92,6 +92,9 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
+            // カメラ関係？でクラッシュするので難読化を無効化
+            shrinkResources false
+            minifyEnabled false
         }
     }
 }

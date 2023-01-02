@@ -60,9 +60,9 @@ platform :android do
     build_type = ["--", options[:build_type].downcase].join
     flavor = ["--dart-define=FLAVOR=", options[:flavor].downcase].join
 
-    sh("fvm", "flutter", "build", "apk", build_type, flavor)
+    sh("fvm", "flutter", "build", "apk", build_type, flavor, "--no-shrink")
     if options[:app_bundle]
-      sh("fvm", "flutter", "build", "appbundle", build_type, flavor)
+      sh("fvm", "flutter", "build", "appbundle", build_type, flavor, "--no-shrink")
     end
   end
 end
