@@ -1,0 +1,68 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+# 直接 gradlew を実行してしまうと dart-define で定義した flavor が Android 環境まで届かない
+# そのため、flutter コマンドからビルドを実行するようにしている
+
+default_platform(:android)
+
+platform :android do
+  desc "Debug Development build"
+  lane :debug_development_build do
+    flutter_android_build(
+      build_type: "debug",
+      flavor: "development",
+      app_bundle: false
+    )
+  end
+
+  desc "Release Development build"
+  lane :release_development_build do
+    flutter_android_build(
+      build_type: "release",
+      flavor: "development",
+      app_bundle: false
+    )
+  end
+
+  desc "Debug Production build"
+  lane :debug_production_build do
+    flutter_android_build(
+      build_type: "debug",
+      flavor: "production",
+      app_bundle: false
+    )
+  end
+
+  desc "Release Production build"
+  lane :release_production_build do
+    flutter_android_build(
+      build_type: "release",
+      flavor: "production",
+      app_bundle: true
+    )
+  end
+
+  desc "Flutter Android build lane"
+  lane :flutter_android_build do |options|
+    build_type = ["--", options[:build_type].downcase].join
+    flavor = ["--dart-define=FLAVOR=", options[:flavor].downcase].join
+
+    sh("fvm", "flutter", "build", "apk", build_type, flavor, "--no-shrink")
+    if options[:app_bundle]
+      sh("fvm", "flutter", "build", "appbundle", build_type, flavor, "--no-shrink")
+    end
+  end
+end

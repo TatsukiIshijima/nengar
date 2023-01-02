@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light Mode Theme -->
+    <color name="colorPrimary">#4B39EF</color>
+    <color name="colorSecondary">#39D2C0</color>
+    <color name="colorTertiary">#EE8B60</color>
+    <color name="colorAlternate">#FF5963</color>
+    <color name="colorPrimaryBackground">#F1F4F8</color>
+    <color name="colorSecondaryBackground">#FFFFFF</color>
+    <color name="colorPrimaryText">#101213</color>
+    <color name="colorSecondaryText">#57636C</color>
+    <color name="colorPrimaryBtnText">#FFFFFF</color>
+    <color name="colorLineColor">#E0E3E7</color>
+
+    <!-- Dark Mode Theme -->
+    <color name="colorPrimaryDark">#4B39EF</color>
+    <color name="colorSecondaryDark">#39D2C0</color>
+    <color name="colorTertiaryDark">#EE8B60</color>
+    <color name="colorAlternateDark">#FF5963</color>
+    <color name="colorPrimaryBackgroundDark">#1A1F24</color>
+    <color name="colorSecondaryBackgroundDark">#101213</color>
+    <color name="colorPrimaryTextDark">#FFFFFF</color>
+    <color name="colorSecondaryTextDark">#95A1AC</color>
+    <color name="colorPrimaryBtnTextDark">#FFFFFF</color>
+    <color name="colorLineColorDark">#22282F</color>
+
+    <color name="primaryColor">#ee220c</color>
+    <color name="primaryLightColor">#ff613c</color>
+    <color name="primaryDarkColor">#b30000</color>
+    <color name="secondaryColor">#eddf9d</color>
+    <color name="secondaryLightColor">#ffffce</color>
+    <color name="secondaryDarkColor">#baad6e</color>
+    <color name="primaryTextColor">#fff9d7</color>
+    <color name="secondaryTextColor">#ffffce</color>
+    <color name="backgroundLightColor">#eeeeee</color>
+</resources>

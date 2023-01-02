@@ -1,0 +1,57 @@
+name: Archive-Android
+on:
+  workflow_dispatch:
+#on:
+#  push:
+#    branches:
+#      - 'master'
+jobs:
+  archive-android:
+    runs-on: macos-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+      - name: Install bundler
+        run: |
+          gem install bundler
+          cd android
+          bundle config --local path vendor/bundle
+          bundle install
+      - name: Install Flutter by fvm
+        run: sh ./scripts/fvm_install.sh
+      - name: Generate files by flutter command
+        run: |
+          fvm flutter clean
+          fvm flutter pub get
+          fvm flutter gen-l10n
+          fvm flutter packages pub run build_runner build --delete-conflicting-outputs
+      - name: Write in keystore properties
+        env:
+          NENGAR_STORE_PASSWORD: ${{ secrets.NENGAR_STORE_PASSWORD }}
+          NENGAR_KEY_PASSWORD: ${{ secrets.NENGAR_KEY_PASSWORD }}
+          NENGAR_KEY_ALIAS: ${{ secrets.NENGAR_KEY_ALIAS }}
+          NENGAR_BASE64_UPLOAD_KEYSTORE: ${{ secrets.NENGAR_BASE64_UPLOAD_KEYSTORE}}
+        run: |
+          cd android
+          echo "storePassword=${NENGAR_STORE_PASSWORD}" >> ./keystore.properties
+          echo "keyPassword=${NENGAR_KEY_PASSWORD}" >> ./keystore.properties
+          echo "keyAlias=${NENGAR_KEY_ALIAS}" >> ./keystore.properties
+          echo ${NENGAR_BASE64_UPLOAD_KEYSTORE} | base64 -d > ./release-application-key
+          echo "storeFile=`pwd`/release-application-key" >> ./keystore.properties
+      - name: Build Android
+        run: |
+          cd android
+          bundle exec fastlane android release_production_build
+      - name: Archive
+        uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: outputs
+          path: |
+            build/app/outputs/apk/release
+            build/app/outputs/bundle/release
