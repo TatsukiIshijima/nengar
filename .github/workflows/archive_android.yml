@@ -1,4 +1,4 @@
-name: Archive
+name: Archive-Android
 on: [ workflow_dispatch ]
 #on:
 #  push:
