@@ -62,4 +62,4 @@ fvm flutter packages pub run build_runner build
 
 # スクリーンショット
 
-<img src="screenshot/1_splash.png" width="150"> <img src="screenshot/2_recognize_01.png" width="150"> <img src="screenshot/3_recognize_02.png" width="150"> <img src="screenshot/4_edit.png" width="150">
+<img src="screenshot/1_splash.png" width="150"> <img src="screenshot/2_recognize_01.png" width="150"> <img src="screenshot/3_recognize_02.png" width="150"> <img src="screenshot/4_recognize_03.png" width="150"> <img src="screenshot/5_edit.png" width="150">
