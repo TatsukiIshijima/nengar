@@ -6,19 +6,17 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:nengar/extension/RecognisedTextExtension.dart';
 import 'package:nengar/model/recognized_text.dart' as model;
-import 'package:nengar/model/uimodel/win_numbers_uimodel.dart';
 import 'package:nengar/model/uimodel/win_result_uimodel.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
-import 'package:nengar/usecase/judge_numbers_usecase.dart';
-import 'package:nengar/usecase/load_numbers_usecase.dart';
+import 'package:nengar/viewmodel/number_recognize_viewmodel.dart';
 import 'package:nengar/widgets/background.dart';
 import 'package:nengar/widgets/camera_view.dart';
 import 'package:nengar/widgets/number_detector_painter.dart';
 import 'package:nengar/widgets/win_numbers_overlay.dart';
 
-class NumberRecognizePage extends StatelessWidget {
+class NumberRecognizePage extends HookWidget {
   const NumberRecognizePage(
     this._appRouter,
     this._numbersRepository,
@@ -32,6 +30,10 @@ class NumberRecognizePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModelRef = useRef(NumberRecognizeViewModel(_numbersRepository));
+
+    viewModelRef.value.onBuild(_forceUpdate);
+
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: PlatformText(AppLocalizations.of(context)!.appName),
@@ -49,50 +51,27 @@ class NumberRecognizePage extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: _RecognizePageBody(
-          _numbersRepository,
-          _forceUpdate,
-        ),
+        child: _RecognizePageBody(viewModelRef.value),
       ),
     );
   }
 }
 
-class _RecognizePageBody extends HookWidget {
+class _RecognizePageBody extends StatelessWidget {
   const _RecognizePageBody(
-    this._numbersRepository,
-    this._forceUpdate, {
+    this._numberRecognizeViewModel, {
     Key? key,
   }) : super(key: key);
 
-  final NumbersRepository _numbersRepository;
-  final bool _forceUpdate;
+  final NumberRecognizeViewModel _numberRecognizeViewModel;
 
   @override
   Widget build(BuildContext context) {
-    final judgeUseCaseRef = useRef(JudgeNumbersUseCase(_numbersRepository));
-    final loadNumbersUseCaseRef =
-        useRef(LoadNumbersUseCase(_numbersRepository));
-
-    final winResultUseState = useState(WinResultUiModel.empty());
-    final winNumbersUseState = useState(WinNumbersUiModel.empty());
-
-    useEffect(
-      () {
-        loadNumbersUseCaseRef.value.execute().then((uiModel) {
-          winNumbersUseState.value = uiModel;
-        });
-        return;
-      },
-      [_forceUpdate],
-    );
-
     return Stack(
       children: [
         _RecognizeCameraView(
           onRecognized: (model.RecognizedText recognizedText) async {
-            final winType = await judgeUseCaseRef.value.execute(recognizedText);
-            winResultUseState.value = WinResultUiModel.from(winType);
+            _numberRecognizeViewModel.onRecognize(recognizedText);
           },
         ),
         Align(
@@ -114,7 +93,7 @@ class _RecognizePageBody extends HookWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       WinNumbersOverlay(
-                        uiModel: winNumbersUseState.value,
+                        uiModel: _numberRecognizeViewModel.winNumbersUiModel,
                       ),
                       PlatformText(
                         AppLocalizations.of(context)!
@@ -130,7 +109,7 @@ class _RecognizePageBody extends HookWidget {
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: _RecognizedWinResultSection(
-                    uiModel: winResultUseState.value,
+                    uiModel: _numberRecognizeViewModel.winResultUiModel,
                   ),
                 ),
               ],
