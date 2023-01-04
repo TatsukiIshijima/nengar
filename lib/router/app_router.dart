@@ -5,6 +5,8 @@ abstract class AppRouter {
 
   void goRecognizePage(BuildContext context, {bool forceUpdate = false});
 
+  String location(BuildContext context);
+
   static const splashPageRoutePath = '/';
   static const numberEditPageRoutePath = '/edit';
   static const numberRecognizePageRoutePath = '/recognize';

@@ -34,6 +34,16 @@ class NumberRecognizePage extends HookWidget {
 
     viewModelRef.value.onBuild(_forceUpdate);
 
+    useEffect(
+      () {
+        viewModelRef.value.isEditMode = _appRouter
+            .location(context)
+            .contains(AppRouter.numberEditPageRoutePath);
+        return null;
+      },
+      [_appRouter.location(context)],
+    );
+
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: PlatformText(AppLocalizations.of(context)!.appName),

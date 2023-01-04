@@ -13,4 +13,7 @@ class AppRouterImpl extends AppRouter {
     GoRouter.of(context).go(
         '${AppRouter.numberRecognizePageRoutePath}?${AppRouter.forceUpdateQuery}=$forceUpdate');
   }
+
+  @override
+  String location(BuildContext context) => GoRouter.of(context).location;
 }
