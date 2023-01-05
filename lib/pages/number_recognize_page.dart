@@ -4,16 +4,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:nengar/extension/RecognisedTextExtension.dart';
-import 'package:nengar/model/recognized_text.dart' as model;
 import 'package:nengar/model/uimodel/win_result_uimodel.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
+import 'package:nengar/viewmodel/number_load_viewmodel.dart';
 import 'package:nengar/viewmodel/number_recognize_viewmodel.dart';
 import 'package:nengar/widgets/background.dart';
 import 'package:nengar/widgets/camera_view.dart';
-import 'package:nengar/widgets/number_detector_painter.dart';
 import 'package:nengar/widgets/win_numbers_overlay.dart';
 
 class NumberRecognizePage extends HookWidget {
@@ -30,16 +28,23 @@ class NumberRecognizePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModelRef = useRef(NumberRecognizeViewModel(_numbersRepository));
+    // インスタンスがbuild毎に作られないようにuseRefを使用する
+    final numberLoadViewModelRef =
+        useRef(NumberLoadViewModel(_numbersRepository));
+    final numberRecognizeViewModelRef =
+        useRef(NumberRecognizeViewModel(_numbersRepository));
 
-    viewModelRef.value.onBuild(_forceUpdate);
+    numberLoadViewModelRef.value.onBuild(_forceUpdate);
+    numberRecognizeViewModelRef.value.onBuild();
 
     useEffect(
       () {
-        viewModelRef.value.isEditMode = _appRouter
-            .location(context)
-            .contains(AppRouter.numberEditPageRoutePath);
-        return null;
+        // FIXME:以下エラー発生
+        // Cannot listen to inherited widgets inside HookState.initState. Use HookState.build instead
+        // recognizeCameraViewModelRef.value.isEditMode = _appRouter
+        //     .location(useContext())
+        //     .contains(AppRouter.numberEditPageRoutePath);
+        // return () {};
       },
       [_appRouter.location(context)],
     );
@@ -61,7 +66,10 @@ class NumberRecognizePage extends HookWidget {
         ],
       ),
       body: SafeArea(
-        child: _RecognizePageBody(viewModelRef.value),
+        child: _RecognizePageBody(
+          numberLoadViewModelRef.value,
+          numberRecognizeViewModelRef.value,
+        ),
       ),
     );
   }
@@ -69,10 +77,12 @@ class NumberRecognizePage extends HookWidget {
 
 class _RecognizePageBody extends StatelessWidget {
   const _RecognizePageBody(
+    this._numberLoadViewModel,
     this._numberRecognizeViewModel, {
     Key? key,
   }) : super(key: key);
 
+  final NumberLoadViewModel _numberLoadViewModel;
   final NumberRecognizeViewModel _numberRecognizeViewModel;
 
   @override
@@ -80,8 +90,9 @@ class _RecognizePageBody extends StatelessWidget {
     return Stack(
       children: [
         _RecognizeCameraView(
-          onRecognized: (model.RecognizedText recognizedText) async {
-            _numberRecognizeViewModel.onRecognize(recognizedText);
+          customPaint: _numberRecognizeViewModel.customPaint,
+          onUpdateFrame: (image) {
+            _numberRecognizeViewModel.inputImage = image;
           },
         ),
         Align(
@@ -103,7 +114,7 @@ class _RecognizePageBody extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       WinNumbersOverlay(
-                        uiModel: _numberRecognizeViewModel.winNumbersUiModel,
+                        uiModel: _numberLoadViewModel.winNumbersUiModel,
                       ),
                       PlatformText(
                         AppLocalizations.of(context)!
@@ -131,72 +142,22 @@ class _RecognizePageBody extends StatelessWidget {
   }
 }
 
-class _RecognizeCameraView extends StatefulWidget {
+class _RecognizeCameraView extends StatelessWidget {
   const _RecognizeCameraView({
+    required this.customPaint,
+    required this.onUpdateFrame,
     Key? key,
-    required this.onRecognized,
   }) : super(key: key);
 
-  final Function(model.RecognizedText recognizedText) onRecognized;
-
-  @override
-  State<StatefulWidget> createState() => _RecognizeCameraViewState();
-}
-
-class _RecognizeCameraViewState extends State<_RecognizeCameraView> {
-  final TextRecognizer _textRecognizer = TextRecognizer();
-  bool _canProcess = true;
-  bool _isBusy = false;
-  CustomPaint? _customPaint;
-
-  @override
-  void dispose() async {
-    _canProcess = false;
-    await _textRecognizer.close();
-    super.dispose();
-  }
+  final CustomPaint? customPaint;
+  final Function(InputImage) onUpdateFrame;
 
   @override
   Widget build(BuildContext context) {
     return CameraView(
-      customPaint: _customPaint,
-      onImage: ((inputImage) {
-        _recognizeProcess(inputImage);
-      }),
+      customPaint: customPaint,
+      onImage: ((image) => onUpdateFrame(image)),
     );
-  }
-
-  Future<void> _recognizeProcess(InputImage inputImage) async {
-    if (!_canProcess) return;
-    if (_isBusy) return;
-
-    _isBusy = true;
-    final recognisedText = await _textRecognizer.processImage(inputImage);
-    final recognizedText = recognisedText.toRecognizedText().filteredByNumber();
-    _paintRecognizedResultIfNeed(inputImage, recognizedText);
-    _isBusy = false;
-
-    if (mounted) {
-      setState(() {
-        if (_customPaint != null) {
-          widget.onRecognized(recognizedText);
-        }
-      });
-    }
-  }
-
-  void _paintRecognizedResultIfNeed(
-    InputImage inputImage,
-    model.RecognizedText recognizedText,
-  ) {
-    final size = inputImage.inputImageData?.size;
-    final rotation = inputImage.inputImageData?.imageRotation;
-    if (size != null && rotation != null) {
-      final painter = NumberDetectorPainter(recognizedText, size, rotation);
-      _customPaint = CustomPaint(painter: painter);
-    } else {
-      _customPaint = null;
-    }
   }
 }
 
