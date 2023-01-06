@@ -37,16 +37,16 @@ class NumberRecognizePage extends HookWidget {
     numberLoadViewModelRef.value.onBuild(_forceUpdate);
     numberRecognizeViewModelRef.value.onBuild();
 
+    // contextはuseEffect内では使用できないので外で取得する
+    final location = _appRouter.location(context);
+
     useEffect(
       () {
-        // FIXME:以下エラー発生
-        // Cannot listen to inherited widgets inside HookState.initState. Use HookState.build instead
-        // recognizeCameraViewModelRef.value.isEditMode = _appRouter
-        //     .location(useContext())
-        //     .contains(AppRouter.numberEditPageRoutePath);
-        // return () {};
+        numberRecognizeViewModelRef.value.isEditMode =
+            location.contains(AppRouter.numberEditPageRoutePath);
+        return;
       },
-      [_appRouter.location(context)],
+      [location],
     );
 
     return PlatformScaffold(
@@ -54,10 +54,7 @@ class NumberRecognizePage extends HookWidget {
         title: PlatformText(AppLocalizations.of(context)!.appName),
         trailingActions: [
           IconButton(
-            onPressed: () {
-              // FIXME:go_routerのサブルート遷移だと認識画面のカメラが止まらないので対応必要
-              _appRouter.goEditPage(context);
-            },
+            onPressed: () => _appRouter.goEditPage(context),
             icon: const Icon(
               Icons.settings,
               color: Colors.white,
