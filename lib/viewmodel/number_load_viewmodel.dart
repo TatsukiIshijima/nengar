@@ -15,8 +15,6 @@ class NumberLoadViewModel {
 
   final ValueNotifier<bool> _forceUpdateUseState = useState(false);
 
-  bool get forceUpdate => _forceUpdateUseState.value;
-
   final ValueNotifier<WinNumbersUiModel> _winNumbersUseState =
       useState(WinNumbersUiModel.empty());
 
