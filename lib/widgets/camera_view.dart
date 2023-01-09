@@ -2,8 +2,12 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:nengar/main.dart';
+import 'package:nengar/model/camera_permission_error.dart';
+import 'package:nengar/text_style.dart';
 
 /// https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/packages/google_ml_kit/example/lib/vision_detector_views/text_detector_view.dart
 
@@ -27,6 +31,7 @@ class _CameraViewState extends State<CameraView> {
   late CameraController _controller;
   int _cameraIndex = 0;
   double zoomLevel = 0.0, minZoomLevel = 0.0, maxZoomLevel = 0.0;
+  CameraPermissionError? _cameraPermissionError;
 
   @override
   void initState() {
@@ -61,9 +66,24 @@ class _CameraViewState extends State<CameraView> {
 
   @override
   Widget build(BuildContext context) {
+    final cameraPermissionError = _cameraPermissionError;
+    if (cameraPermissionError != null) {
+      return _CameraViewBody(
+        children: [
+          Center(
+            child: _CameraPermissionErrorText(cameraPermissionError),
+          ),
+        ],
+      );
+    }
+
     if (_controller.value.isInitialized == false) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return const _CameraViewBody(
+        children: [
+          Center(
+            child: CircularProgressIndicator(),
+          ),
+        ],
       );
     }
 
@@ -76,20 +96,16 @@ class _CameraViewState extends State<CameraView> {
 
     if (scale < 1) scale = 1 / scale;
 
-    return Container(
-      color: Colors.black,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Transform.scale(
-            scale: scale,
-            child: Center(
-              child: CameraPreview(_controller),
-            ),
+    return _CameraViewBody(
+      children: [
+        Transform.scale(
+          scale: scale,
+          child: Center(
+            child: CameraPreview(_controller),
           ),
-          if (widget.customPaint != null) widget.customPaint!
-        ],
-      ),
+        ),
+        if (widget.customPaint != null) widget.customPaint!
+      ],
     );
   }
 
@@ -113,6 +129,10 @@ class _CameraViewState extends State<CameraView> {
       });
       _controller.startImageStream((image) => _processCameraImage(image));
       setState(() {});
+    }).catchError((Object e) {
+      if (e is CameraException) {
+        _cameraPermissionError = CameraPermissionError.values.byName(e.code);
+      }
     });
   }
 
@@ -162,5 +182,65 @@ class _CameraViewState extends State<CameraView> {
     );
 
     widget.onImage(inputImage);
+  }
+}
+
+class _CameraPermissionErrorText extends StatelessWidget {
+  const _CameraPermissionErrorText(
+    this._error, {
+    Key? key,
+  }) : super(key: key);
+
+  final CameraPermissionError _error;
+
+  @override
+  Widget build(BuildContext context) {
+    var description = '';
+    switch (_error) {
+      case CameraPermissionError.CameraAccessDenied:
+        description = AppLocalizations.of(context)!.cameraAccessDenied;
+        break;
+      case CameraPermissionError.CameraAccessDeniedWithoutPrompt:
+        description =
+            AppLocalizations.of(context)!.cameraAccessDeniedWithoutPrompt;
+        break;
+      case CameraPermissionError.CameraAccessRestricted:
+        description = AppLocalizations.of(context)!.cameraAccessRestricted;
+        break;
+      case CameraPermissionError.AudioAccessDenied:
+        description = AppLocalizations.of(context)!.audioAccessDenied;
+        break;
+      case CameraPermissionError.AudioAccessDeniedWithoutPrompt:
+        description =
+            AppLocalizations.of(context)!.audioAccessDeniedWithoutPrompt;
+        break;
+      case CameraPermissionError.AudioAccessRestricted:
+        description = AppLocalizations.of(context)!.audioAccessRestricted;
+        break;
+    }
+    return PlatformText(
+      description,
+      style: subTitle1.copyWith(
+        color: Colors.white,
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
+class _CameraViewBody extends StatelessWidget {
+  const _CameraViewBody({Key? key, required this.children}) : super(key: key);
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black,
+      child: Stack(
+        fit: StackFit.expand,
+        children: children,
+      ),
+    );
   }
 }
