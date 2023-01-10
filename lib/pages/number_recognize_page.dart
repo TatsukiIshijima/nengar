@@ -8,6 +8,7 @@ import 'package:nengar/model/uimodel/win_result_uimodel.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
+import 'package:nengar/viewmodel/camera_viewmodel.dart';
 import 'package:nengar/viewmodel/number_load_viewmodel.dart';
 import 'package:nengar/viewmodel/number_recognize_viewmodel.dart';
 import 'package:nengar/widgets/background.dart';
@@ -29,6 +30,7 @@ class NumberRecognizePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // インスタンスがbuild毎に作られないようにuseRefを使用する
+    final cameraViewModelRef = useRef(CameraViewModel());
     final numberLoadViewModelRef =
         useRef(NumberLoadViewModel(_numbersRepository));
     final numberRecognizeViewModelRef =
@@ -41,7 +43,7 @@ class NumberRecognizePage extends HookWidget {
     final location = _appRouter.location(context);
 
     useEffect(
-      () {
+          () {
         numberRecognizeViewModelRef.value.isEditMode =
             location.contains(AppRouter.numberEditPageRoutePath);
         return;
@@ -64,6 +66,7 @@ class NumberRecognizePage extends HookWidget {
       ),
       body: SafeArea(
         child: _RecognizePageBody(
+          cameraViewModelRef.value,
           numberLoadViewModelRef.value,
           numberRecognizeViewModelRef.value,
         ),
@@ -74,11 +77,13 @@ class NumberRecognizePage extends HookWidget {
 
 class _RecognizePageBody extends StatelessWidget {
   const _RecognizePageBody(
+    this._cameraViewModel,
     this._numberLoadViewModel,
     this._numberRecognizeViewModel, {
     Key? key,
   }) : super(key: key);
 
+  final CameraViewModel _cameraViewModel;
   final NumberLoadViewModel _numberLoadViewModel;
   final NumberRecognizeViewModel _numberRecognizeViewModel;
 
@@ -87,6 +92,7 @@ class _RecognizePageBody extends StatelessWidget {
     return Stack(
       children: [
         _RecognizeCameraView(
+          cameraViewModel: _cameraViewModel,
           customPaint: _numberRecognizeViewModel.customPaint,
           onUpdateFrame: (image) {
             _numberRecognizeViewModel.inputImage = image;
@@ -110,15 +116,17 @@ class _RecognizePageBody extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      WinNumbersOverlay(
-                        uiModel: _numberLoadViewModel.winNumbersUiModel,
-                      ),
-                      PlatformText(
-                        AppLocalizations.of(context)!
-                            .recognizePageCameraOperationHint,
-                        textAlign: TextAlign.center,
-                        style: subTitle1.copyWith(color: Colors.white),
-                      ),
+                      if (_cameraViewModel.cameraPermissionError == null)
+                        WinNumbersOverlay(
+                          uiModel: _numberLoadViewModel.winNumbersUiModel,
+                        ),
+                      if (_cameraViewModel.cameraPermissionError == null)
+                        PlatformText(
+                          AppLocalizations.of(context)!
+                              .recognizePageCameraOperationHint,
+                          textAlign: TextAlign.center,
+                          style: subTitle1.copyWith(color: Colors.white),
+                        ),
                     ],
                   ),
                 ),
@@ -141,17 +149,20 @@ class _RecognizePageBody extends StatelessWidget {
 
 class _RecognizeCameraView extends StatelessWidget {
   const _RecognizeCameraView({
+    required this.cameraViewModel,
     required this.customPaint,
     required this.onUpdateFrame,
     Key? key,
   }) : super(key: key);
 
+  final CameraViewModel cameraViewModel;
   final CustomPaint? customPaint;
   final Function(InputImage) onUpdateFrame;
 
   @override
   Widget build(BuildContext context) {
     return CameraView(
+      cameraViewModel: cameraViewModel,
       customPaint: customPaint,
       onImage: ((image) => onUpdateFrame(image)),
     );

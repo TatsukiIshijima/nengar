@@ -8,17 +8,20 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:nengar/main.dart';
 import 'package:nengar/model/camera_permission_error.dart';
 import 'package:nengar/text_style.dart';
+import 'package:nengar/viewmodel/camera_viewmodel.dart';
 
 /// https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/packages/google_ml_kit/example/lib/vision_detector_views/text_detector_view.dart
 
 class CameraView extends StatefulWidget {
   const CameraView({
     Key? key,
+    required this.cameraViewModel,
     required this.onImage,
     this.customPaint,
     this.initialDirection = CameraLensDirection.back,
   }) : super(key: key);
 
+  final CameraViewModel cameraViewModel;
   final CustomPaint? customPaint;
   final Function(InputImage inputImage) onImage;
   final CameraLensDirection initialDirection;
@@ -31,7 +34,6 @@ class _CameraViewState extends State<CameraView> {
   late CameraController _controller;
   int _cameraIndex = 0;
   double zoomLevel = 0.0, minZoomLevel = 0.0, maxZoomLevel = 0.0;
-  CameraPermissionError? _cameraPermissionError;
 
   @override
   void initState() {
@@ -66,7 +68,7 @@ class _CameraViewState extends State<CameraView> {
 
   @override
   Widget build(BuildContext context) {
-    final cameraPermissionError = _cameraPermissionError;
+    final cameraPermissionError = widget.cameraViewModel.cameraPermissionError;
     if (cameraPermissionError != null) {
       return _CameraViewBody(
         children: [
@@ -131,7 +133,8 @@ class _CameraViewState extends State<CameraView> {
       setState(() {});
     }).catchError((Object e) {
       if (e is CameraException) {
-        _cameraPermissionError = CameraPermissionError.values.byName(e.code);
+        widget.cameraViewModel.cameraPermissionError =
+            CameraPermissionError.values.byName(e.code);
       }
     });
   }
