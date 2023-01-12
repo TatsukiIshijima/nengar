@@ -3,6 +3,7 @@
   "positiveButtonLabel": "OK",
 
   "recognizePageCameraOperationHint": "カメラをくじ番号にかざしてください",
+  "recognizePageNumbersEmptyHint": "当選番号を設定してください。",
 
   "editPageTitle": "当選番号設定",
   "editPageHeaderTitle": "今年の当選番号を入力しましょう",
