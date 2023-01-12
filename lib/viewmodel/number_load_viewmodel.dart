@@ -20,6 +20,8 @@ class NumberLoadViewModel {
 
   WinNumbersUiModel get winNumbersUiModel => _winNumbersUseState.value;
 
+  bool isEmptyNumber() => winNumbersUiModel == WinNumbersUiModel.empty();
+
   void onBuild(bool forceUpdate) {
     _changeForceUpdateFlag(forceUpdate);
 
