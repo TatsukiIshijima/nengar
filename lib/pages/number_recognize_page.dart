@@ -43,7 +43,7 @@ class NumberRecognizePage extends HookWidget {
     final location = _appRouter.location(context);
 
     useEffect(
-          () {
+      () {
         numberRecognizeViewModelRef.value.isEditMode =
             location.contains(AppRouter.numberEditPageRoutePath);
         return;
@@ -89,6 +89,23 @@ class _RecognizePageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hintText = _numberLoadViewModel.isEmptyNumber()
+        ? AppLocalizations.of(context)!.recognizePageNumbersEmptyHint
+        : AppLocalizations.of(context)!.recognizePageCameraOperationHint;
+
+    List<Widget> children = _cameraViewModel.cameraPermissionError == null
+        ? [
+            WinNumbersOverlay(
+              uiModel: _numberLoadViewModel.winNumbersUiModel,
+            ),
+            PlatformText(
+              hintText,
+              textAlign: TextAlign.center,
+              style: subTitle1.copyWith(color: Colors.white),
+            ),
+          ]
+        : List.empty();
+
     return Stack(
       children: [
         _RecognizeCameraView(
@@ -115,19 +132,7 @@ class _RecognizePageBody extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (_cameraViewModel.cameraPermissionError == null)
-                        WinNumbersOverlay(
-                          uiModel: _numberLoadViewModel.winNumbersUiModel,
-                        ),
-                      if (_cameraViewModel.cameraPermissionError == null)
-                        PlatformText(
-                          AppLocalizations.of(context)!
-                              .recognizePageCameraOperationHint,
-                          textAlign: TextAlign.center,
-                          style: subTitle1.copyWith(color: Colors.white),
-                        ),
-                    ],
+                    children: children,
                   ),
                 ),
                 Container(
