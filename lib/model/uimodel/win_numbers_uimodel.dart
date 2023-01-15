@@ -36,4 +36,23 @@ class WinNumbersUiModel {
       '',
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is WinNumbersUiModel &&
+          runtimeType == other.runtimeType &&
+          firstWinNumber == other.firstWinNumber &&
+          secondWinNumber == other.secondWinNumber &&
+          thirdPrimaryWinNumber == other.thirdPrimaryWinNumber &&
+          thirdSecondaryWinNumber == other.thirdSecondaryWinNumber &&
+          thirdTertiaryWinNumber == other.thirdTertiaryWinNumber);
+
+  @override
+  int get hashCode =>
+      firstWinNumber.hashCode ^
+      secondWinNumber.hashCode ^
+      thirdPrimaryWinNumber.hashCode ^
+      thirdSecondaryWinNumber.hashCode ^
+      thirdTertiaryWinNumber.hashCode;
 }

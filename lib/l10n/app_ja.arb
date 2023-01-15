@@ -3,6 +3,7 @@
   "positiveButtonLabel": "OK",
 
   "recognizePageCameraOperationHint": "カメラをくじ番号にかざしてください",
+  "recognizePageNumbersEmptyHint": "当選番号を設定してください。",
 
   "editPageTitle": "当選番号設定",
   "editPageHeaderTitle": "今年の当選番号を入力しましょう",
@@ -13,5 +14,12 @@
   "editPageSaveButtonLabel": "保存",
 
   "editPageSaveSuccessDialogTitle": "保存しました",
-  "editPageSaveSuccessDialogContent": "当選番号はいつでも変更できます。"
+  "editPageSaveSuccessDialogContent": "当選番号はいつでも変更できます。",
+
+  "cameraAccessDenied": "カメラの使用を許可してください。",
+  "cameraAccessDeniedWithoutPrompt": "「設定」->「プライバシー」からカメラの使用を許可してください。",
+  "cameraAccessRestricted": "カメラの使用が制限されています。",
+  "audioAccessDenied": "マイクの使用を許可してください。",
+  "audioAccessDeniedWithoutPrompt": "「設定」->「プライバシー」からマイクの使用を許可してください。",
+  "audioAccessRestricted": "マイクの使用が制限されています。"
 }
