@@ -89,15 +89,17 @@ class _RecognizePageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hintText = _numberLoadViewModel.isEmptyNumber()
+    final isEmptyNumber = _numberLoadViewModel.isEmptyNumber();
+    final hintText = isEmptyNumber
         ? AppLocalizations.of(context)!.recognizePageNumbersEmptyHint
         : AppLocalizations.of(context)!.recognizePageCameraOperationHint;
 
     List<Widget> children = _cameraViewModel.cameraPermissionError == null
         ? [
-            WinNumbersOverlay(
-              uiModel: _numberLoadViewModel.winNumbersUiModel,
-            ),
+            if (!isEmptyNumber)
+              WinNumbersOverlay(
+                uiModel: _numberLoadViewModel.winNumbersUiModel,
+              ),
             PlatformText(
               hintText,
               textAlign: TextAlign.center,
