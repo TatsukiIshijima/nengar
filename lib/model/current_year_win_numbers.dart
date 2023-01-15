@@ -1,7 +1,7 @@
 class CurrentYearWinNumbers {
-  static const String first = '123456';
-  static const String second = '7890';
-  static const String thirdPrimary = '13';
-  static const String thirdSecondary = '57';
-  static const String thirdTertiary = '91';
+  static const String first = '109681';
+  static const String second = '6417';
+  static const String thirdPrimary = '73';
+  static const String thirdSecondary = '42';
+  static const String thirdTertiary = '11';
 }
