@@ -5,7 +5,7 @@
 # 開発環境
 Flutter のバージョン管理に [fvm](https://github.com/fluttertools/fvm) を使用しています。
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.0.0-aqua.svg)](https://developer.apple.com/jp/xcode/)
+[![Flutter](https://img.shields.io/badge/Flutter-3.7.0-aqua.svg)](https://developer.apple.com/jp/xcode/)
 
 # ライブラリ
 
@@ -57,6 +57,32 @@ fvm flutter packages pub run build_runner build
 ```
 
 ## iOS
+
+### 前準備
+
+CocoaPods をグローバルにインストールしないため、以下コマンドで fvm 経由の flutter コマンド実行時にローカルインストールされた CocoaPods を使用するように
+以下コマンドを実行する。
+
+```
+cd ios
+export PATH="$PWD/vendor/bin:$PATH"
+hash -r 2>/dev/null || true 
+```
+
+以下コマンドにて疎通確認する
+
+```
+fvm flutter doctor
+```
+
+### ビルド
+
+```
+fvm flutter run --debug --target='lib/main.dart' --dart-define=FLAVOR=development
+```
+
+＊FLAVOR指定すると BundleID が dev 版の方が使われ、ProvisioningProfile を用意していないためビルドエラーになる そのため、--dart-define
+を指定せず実行する（要更新）
 
 ## Android
 
