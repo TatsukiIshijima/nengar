@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_use/flutter_use.dart';
@@ -19,7 +18,8 @@ class NumberRecognizeViewModel {
     _judgeNumbersUseCase = JudgeNumbersUseCase(_numbersRepository);
   }
 
-  final TextRecognizer _textRecognizer = TextRecognizer();
+  final TextRecognizer _textRecognizer =
+      TextRecognizer(script: TextRecognitionScript.japanese);
 
   final ValueNotifier<bool> _canProcessUseState = useState(true);
 
