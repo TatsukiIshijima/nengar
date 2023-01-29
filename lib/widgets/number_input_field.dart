@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:nengar/gen/colors.gen.dart';
 import 'package:nengar/text_style.dart';
 
@@ -25,26 +25,9 @@ class NumberInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return PlatformTextFormField(
       controller: textEditingController,
       focusNode: focusNode,
-      decoration: InputDecoration(
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: ColorName.colorLineColorDark,
-            width: 1,
-          ),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: ColorName.colorLineColorDark,
-            width: 1,
-          ),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        contentPadding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
-      ),
       keyboardType: TextInputType.number,
       maxLines: maxLines,
       maxLength: maxLength,
@@ -52,6 +35,34 @@ class NumberInputField extends StatelessWidget {
       onChanged: (text) => onChanged?.call(text),
       onFieldSubmitted: (text) => onSubmitted?.call(text),
       style: title3,
+      material: (context, platformTarget) => MaterialTextFormFieldData(
+        decoration: InputDecoration(
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: ColorName.colorLineColorDark,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: ColorName.colorLineColorDark,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          contentPadding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
+        ),
+      ),
+      cupertino: (context, platformTarget) => CupertinoTextFormFieldData(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: ColorName.colorLineColorDark,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
     );
   }
 }
