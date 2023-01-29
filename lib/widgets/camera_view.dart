@@ -1,5 +1,4 @@
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -31,8 +30,8 @@ class CameraView extends StatefulWidget {
 }
 
 class _CameraViewState extends State<CameraView> {
-  late CameraController _controller;
-  int _cameraIndex = 0;
+  CameraController? _controller;
+  int _cameraIndex = -1;
   double zoomLevel = 0.0, minZoomLevel = 0.0, maxZoomLevel = 0.0;
 
   @override
@@ -50,13 +49,17 @@ class _CameraViewState extends State<CameraView> {
             element.sensorOrientation == 90),
       );
     } else {
-      _cameraIndex = cameras.indexOf(
-        cameras.firstWhere(
-          (element) => element.lensDirection == widget.initialDirection,
-        ),
-      );
+      for (var i = 0; i < cameras.length; i++) {
+        if (cameras[i].lensDirection == widget.initialDirection) {
+          _cameraIndex = i;
+          break;
+        }
+      }
     }
 
+    if (_cameraIndex == -1) {
+      return;
+    }
     _startLiveFeed();
   }
 
@@ -79,7 +82,7 @@ class _CameraViewState extends State<CameraView> {
       );
     }
 
-    if (_controller.value.isInitialized == false) {
+    if (_controller == null || _controller?.value.isInitialized == false) {
       return const _CameraViewBody(
         children: [
           Center(
@@ -94,7 +97,7 @@ class _CameraViewState extends State<CameraView> {
     // landscape として camera preview の size を受け取るので
     // 実際には size.aspectRatio / (1 / camera.aspectRatio) の計算になるが
     // portrait の計算なので以下になる
-    var scale = size.aspectRatio * _controller.value.aspectRatio;
+    var scale = size.aspectRatio * _controller!.value.aspectRatio;
 
     if (scale < 1) scale = 1 / scale;
 
@@ -103,7 +106,7 @@ class _CameraViewState extends State<CameraView> {
         Transform.scale(
           scale: scale,
           child: Center(
-            child: CameraPreview(_controller),
+            child: CameraPreview(_controller!),
           ),
         ),
         if (widget.customPaint != null) widget.customPaint!
@@ -118,18 +121,18 @@ class _CameraViewState extends State<CameraView> {
       ResolutionPreset.high,
       enableAudio: false,
     );
-    _controller.initialize().then((_) {
+    _controller?.initialize().then((_) {
       if (!mounted) {
         return;
       }
-      _controller.getMinZoomLevel().then((value) {
+      _controller?.getMinZoomLevel().then((value) {
         zoomLevel = value;
         minZoomLevel = value;
       });
-      _controller.getMaxZoomLevel().then((value) {
+      _controller?.getMaxZoomLevel().then((value) {
         maxZoomLevel = value;
       });
-      _controller.startImageStream((image) => _processCameraImage(image));
+      _controller?.startImageStream((image) => _processCameraImage(image));
       setState(() {});
     }).catchError((Object e) {
       if (e is CameraException) {
@@ -140,8 +143,9 @@ class _CameraViewState extends State<CameraView> {
   }
 
   Future _stopLiveFeed() async {
-    await _controller.stopImageStream();
-    await _controller.dispose();
+    await _controller?.stopImageStream();
+    await _controller?.dispose();
+    _controller = null;
   }
 
   Future _processCameraImage(CameraImage image) async {
