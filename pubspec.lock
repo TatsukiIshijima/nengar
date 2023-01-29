@@ -401,10 +401,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_mlkit_text_recognition
-      sha256: "370eaa15a1e051c4a645d91cb5315d0b7dd59494425d02cf0ed8ff2b573120ff"
+      sha256: "6dc31f02beb1cfd6818da4bf29bf4ae5f4f9e16422c1efd0b515ed0756d73b8e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.0"
+    version: "0.5.0"
   graphs:
     dependency: transitive
     description:
