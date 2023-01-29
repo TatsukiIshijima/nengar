@@ -35,7 +35,7 @@ class ThirdNumberInputSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image(
-                  image: Assets.image.targetImg,
+                  image: Assets.image.targetImg.provider(),
                   width: 32,
                   height: 32,
                   fit: BoxFit.cover,
