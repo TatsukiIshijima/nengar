@@ -43,7 +43,7 @@ class SplashPage extends HookWidget {
                 widthFactor: 0.8,
                 alignment: FractionalOffset.center,
                 child: Image(
-                  image: Assets.image.splashImg,
+                  image: Assets.image.splashImg.provider(),
                   fit: BoxFit.fitWidth,
                 ),
               ),
