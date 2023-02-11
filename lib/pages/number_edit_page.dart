@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_use/flutter_use.dart';
 import 'package:nengar/extension/RegExpExtension.dart';
+import 'package:nengar/gen/colors.gen.dart';
+import 'package:nengar/gen/fonts.gen.dart';
 import 'package:nengar/repository/numbers_repository.dart';
 import 'package:nengar/router/app_router.dart';
 import 'package:nengar/text_style.dart';
@@ -157,12 +158,6 @@ class NumberEditPage extends HookWidget {
                                     () => _showSuccessDialog(context));
                               }
                             : null,
-                        child: PlatformText(
-                          AppLocalizations.of(context)!.editPageSaveButtonLabel,
-                          style: subTitle2.copyWith(
-                            color: Colors.white,
-                          ),
-                        ),
                         material: (_, __) => MaterialElevatedButtonData(
                           style: ElevatedButton.styleFrom(
                             // primary: saveBtnBackgroundColor,
@@ -171,9 +166,18 @@ class NumberEditPage extends HookWidget {
                             ),
                           ),
                         ),
+                        // FIXME:WORKAROUND対応：ここだけThemeが何故か効かないので色とフォントを直指定
                         cupertino: (_, __) => CupertinoElevatedButtonData(
+                          originalStyle: true,
                           borderRadius: BorderRadius.circular(24),
-                          // color: saveBtnBackgroundColor,
+                          color: ColorName.primaryColor,
+                        ),
+                        child: PlatformText(
+                          AppLocalizations.of(context)!.editPageSaveButtonLabel,
+                          style: subTitle2.copyWith(
+                            color: Colors.white,
+                            fontFamily: FontFamily.notoSerifJP,
+                          ),
                         ),
                       ),
                     ),
