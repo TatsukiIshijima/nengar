@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,12 +17,11 @@ import 'package:nengar/widgets/camera_view.dart';
 import 'package:nengar/widgets/win_numbers_overlay.dart';
 
 class NumberRecognizePage extends HookWidget {
-  const NumberRecognizePage(
-    this._appRouter,
-    this._numbersRepository,
-    this._forceUpdate, {
-    Key? key,
-  }) : super(key: key);
+  const NumberRecognizePage(this._appRouter,
+      this._numbersRepository,
+      this._forceUpdate, {
+        Key? key,
+      }) : super(key: key);
 
   final AppRouter _appRouter;
   final NumbersRepository _numbersRepository;
@@ -31,9 +32,9 @@ class NumberRecognizePage extends HookWidget {
     // インスタンスがbuild毎に作られないようにuseRefを使用する
     final cameraViewModelRef = useRef(CameraViewModel());
     final numberLoadViewModelRef =
-        useRef(NumberLoadViewModel(_numbersRepository));
+    useRef(NumberLoadViewModel(_numbersRepository));
     final numberRecognizeViewModelRef =
-        useRef(NumberRecognizeViewModel(_numbersRepository));
+    useRef(NumberRecognizeViewModel(_numbersRepository));
 
     numberLoadViewModelRef.value.onBuild(_forceUpdate);
     numberRecognizeViewModelRef.value.onBuild();
@@ -42,7 +43,7 @@ class NumberRecognizePage extends HookWidget {
     final location = _appRouter.location(context);
 
     useEffect(
-      () {
+          () {
         numberRecognizeViewModelRef.value.isEditMode =
             location.contains(AppRouter.numberEditPageRoutePath);
         return;
@@ -56,9 +57,9 @@ class NumberRecognizePage extends HookWidget {
         trailingActions: [
           PlatformIconButton(
             onPressed: () => _appRouter.goEditPage(context),
-            icon: const Icon(
+            icon: Icon(
               Icons.settings,
-              color: Colors.white,
+              color: Platform.isAndroid ? Colors.white : Colors.grey,
             ),
           ),
         ],
@@ -75,12 +76,11 @@ class NumberRecognizePage extends HookWidget {
 }
 
 class _RecognizePageBody extends StatelessWidget {
-  const _RecognizePageBody(
-    this._cameraViewModel,
-    this._numberLoadViewModel,
-    this._numberRecognizeViewModel, {
-    Key? key,
-  }) : super(key: key);
+  const _RecognizePageBody(this._cameraViewModel,
+      this._numberLoadViewModel,
+      this._numberRecognizeViewModel, {
+        Key? key,
+      }) : super(key: key);
 
   final CameraViewModel _cameraViewModel;
   final NumberLoadViewModel _numberLoadViewModel;
@@ -95,16 +95,16 @@ class _RecognizePageBody extends StatelessWidget {
 
     List<Widget> children = _cameraViewModel.cameraPermissionError == null
         ? [
-            if (!isEmptyNumber)
-              WinNumbersOverlay(
-                uiModel: _numberLoadViewModel.winNumbersUiModel,
-              ),
-            PlatformText(
-              hintText,
-              textAlign: TextAlign.center,
-              style: subTitle1.copyWith(color: Colors.white),
-            ),
-          ]
+      if (!isEmptyNumber)
+        WinNumbersOverlay(
+          uiModel: _numberLoadViewModel.winNumbersUiModel,
+        ),
+      PlatformText(
+        hintText,
+        textAlign: TextAlign.center,
+        style: subTitle1.copyWith(color: Colors.white),
+      ),
+    ]
         : List.empty();
 
     return Stack(
@@ -189,9 +189,9 @@ class _RecognizedWinResultSection extends StatelessWidget {
       child: Center(
         child: uiModel.resultImage != null
             ? Image(
-                image: uiModel.resultImage!,
-                fit: BoxFit.fitHeight,
-              )
+          image: uiModel.resultImage!,
+          fit: BoxFit.fitHeight,
+        )
             : Container(),
       ),
     );
