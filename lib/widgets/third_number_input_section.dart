@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:nengar/gen/assets.gen.dart';
 import 'package:nengar/widgets/number_input_field.dart';
 import 'package:nengar/widgets/number_label.dart';
@@ -47,12 +47,14 @@ class ThirdNumberInputSection extends StatelessWidget {
           ),
           NumberInputField(
             textEditingController: primaryTextEditingController,
+            textInputAction: TextInputAction.next,
             maxLength: 2,
           ),
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
             child: NumberInputField(
               textEditingController: secondaryTextEditingController,
+              textInputAction: TextInputAction.next,
               maxLength: 2,
             ),
           ),
@@ -60,6 +62,7 @@ class ThirdNumberInputSection extends StatelessWidget {
             padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
             child: NumberInputField(
               textEditingController: tertiaryTextEditingController,
+              textInputAction: TextInputAction.done,
               maxLength: 2,
             ),
           ),

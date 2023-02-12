@@ -121,6 +121,7 @@ class NumberEditPage extends HookWidget {
                           .editPageFirstNumberSectionTitle,
                       textEditingController:
                           numberEditViewModel.firstTextEditingController,
+                      textInputAction: TextInputAction.next,
                       maxLength: 6,
                     ),
                   ),
@@ -131,6 +132,7 @@ class NumberEditPage extends HookWidget {
                           .editPageSecondNumberSectionTitle,
                       textEditingController:
                           numberEditViewModel.secondTextEditingController,
+                      textInputAction: TextInputAction.next,
                       maxLength: 4,
                     ),
                   ),
