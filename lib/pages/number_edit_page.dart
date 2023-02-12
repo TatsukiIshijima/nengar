@@ -90,98 +90,101 @@ class NumberEditPage extends HookWidget {
 
     numberEditViewModel.onBuild();
 
-    return PlatformScaffold(
-      appBar: PlatformAppBar(
-        title: PlatformText(AppLocalizations.of(context)!.editPageTitle),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 24,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 32, 0, 32),
-                  child: NumberEditPageHeader(
-                    title: AppLocalizations.of(context)!.editPageHeaderTitle,
-                    subTitle:
-                        AppLocalizations.of(context)!.editPageHeaderSubTitle,
+    return GestureDetector(
+      onTap: () => primaryFocus?.unfocus(),
+      child: PlatformScaffold(
+        appBar: PlatformAppBar(
+          title: PlatformText(AppLocalizations.of(context)!.editPageTitle),
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 24,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 32, 0, 32),
+                    child: NumberEditPageHeader(
+                      title: AppLocalizations.of(context)!.editPageHeaderTitle,
+                      subTitle:
+                          AppLocalizations.of(context)!.editPageHeaderSubTitle,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
-                  child: NumberInputSection(
-                    title: AppLocalizations.of(context)!
-                        .editPageFirstNumberSectionTitle,
-                    textEditingController:
-                        numberEditViewModel.firstTextEditingController,
-                    maxLength: 6,
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
+                    child: NumberInputSection(
+                      title: AppLocalizations.of(context)!
+                          .editPageFirstNumberSectionTitle,
+                      textEditingController:
+                          numberEditViewModel.firstTextEditingController,
+                      maxLength: 6,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
-                  child: NumberInputSection(
-                    title: AppLocalizations.of(context)!
-                        .editPageSecondNumberSectionTitle,
-                    textEditingController:
-                        numberEditViewModel.secondTextEditingController,
-                    maxLength: 4,
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+                    child: NumberInputSection(
+                      title: AppLocalizations.of(context)!
+                          .editPageSecondNumberSectionTitle,
+                      textEditingController:
+                          numberEditViewModel.secondTextEditingController,
+                      maxLength: 4,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
-                  child: ThirdNumberInputSection(
-                    title: AppLocalizations.of(context)!
-                        .editPageThirdNumberSectionTitle,
-                    primaryTextEditingController:
-                        numberEditViewModel.thirdPrimaryTextEditingController,
-                    secondaryTextEditingController:
-                        numberEditViewModel.thirdSecondaryTextEditingController,
-                    tertiaryTextEditingController:
-                        numberEditViewModel.thirdTertiaryTextEditingController,
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+                    child: ThirdNumberInputSection(
+                      title: AppLocalizations.of(context)!
+                          .editPageThirdNumberSectionTitle,
+                      primaryTextEditingController:
+                          numberEditViewModel.thirdPrimaryTextEditingController,
+                      secondaryTextEditingController: numberEditViewModel
+                          .thirdSecondaryTextEditingController,
+                      tertiaryTextEditingController: numberEditViewModel
+                          .thirdTertiaryTextEditingController,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 24, 0, 24),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: PlatformElevatedButton(
-                      onPressed: isSavable
-                          ? () async {
-                              await numberEditViewModel.saveNumbers(
-                                  () => _showSuccessDialog(context));
-                            }
-                          : null,
-                      material: (_, __) => MaterialElevatedButtonData(
-                        style: ElevatedButton.styleFrom(
-                          // primary: saveBtnBackgroundColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 24, 0, 24),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: PlatformElevatedButton(
+                        onPressed: isSavable
+                            ? () async {
+                                await numberEditViewModel.saveNumbers(
+                                    () => _showSuccessDialog(context));
+                              }
+                            : null,
+                        material: (_, __) => MaterialElevatedButtonData(
+                          style: ElevatedButton.styleFrom(
+                            // primary: saveBtnBackgroundColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
                           ),
                         ),
-                      ),
-                      // FIXME:WORKAROUND対応：ここだけThemeが何故か効かないので色とフォントを直指定
-                      cupertino: (_, __) => CupertinoElevatedButtonData(
-                        originalStyle: true,
-                        borderRadius: BorderRadius.circular(24),
-                        color: ColorName.primaryColor,
-                      ),
-                      child: PlatformText(
-                        AppLocalizations.of(context)!.editPageSaveButtonLabel,
-                        style: subTitle2.copyWith(
-                          color: Colors.white,
-                          fontFamily: FontFamily.notoSerifJP,
+                        // FIXME:WORKAROUND対応：ここだけThemeが何故か効かないので色とフォントを直指定
+                        cupertino: (_, __) => CupertinoElevatedButtonData(
+                          originalStyle: true,
+                          borderRadius: BorderRadius.circular(24),
+                          color: ColorName.primaryColor,
+                        ),
+                        child: PlatformText(
+                          AppLocalizations.of(context)!.editPageSaveButtonLabel,
+                          style: subTitle2.copyWith(
+                            color: Colors.white,
+                            fontFamily: FontFamily.notoSerifJP,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
