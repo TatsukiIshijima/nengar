@@ -69,32 +69,37 @@ class App extends HookWidget {
       initialLocation: AppRouter.splashPageRoutePath,
     );
 
-    return PlatformApp(
-      title: env,
-      material: (_, __) => MaterialAppData(
-        theme: nengarMaterialLightTheme,
-        darkTheme: nengarMaterialDarkTheme,
-        // FIXME:ダークモード対応
-        themeMode: ThemeMode.light,
-        locale: const Locale('ja'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-      ),
-      // FIXME: iOSテーマ対応
-      cupertino: (_, __) => CupertinoAppData(
-        theme: nengarCupertinoTheme,
-        locale: const Locale('ja'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-      ),
-      home: _flavorBanner(
-        child: PlatformApp.router(
-          routeInformationParser: router.routeInformationParser,
-          routerDelegate: router.routerDelegate,
+    return Theme(
+      data: nengarMaterialLightTheme,
+      child: PlatformProvider(
+        settings: PlatformSettingsData(
+          iosUsesMaterialWidgets: true,
+          iosUseZeroPaddingForAppbarPlatformIcon: true,
+        ),
+        builder: (context) => PlatformApp(
+          title: env,
+          locale: const Locale('ja'),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
+          material: (_, __) => MaterialAppData(
+            theme: nengarMaterialLightTheme,
+            darkTheme: nengarMaterialDarkTheme,
+            // FIXME:ダークモード対応
+            themeMode: ThemeMode.light,
+          ),
+          cupertino: (_, __) => CupertinoAppData(
+            theme: nengarCupertinoLightTheme,
+          ),
+          home: _flavorBanner(
+            child: PlatformApp.router(
+              routeInformationParser: router.routeInformationParser,
+              routerDelegate: router.routerDelegate,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+            ),
+            show: kDebugMode,
+          ),
         ),
-        show: kDebugMode,
       ),
     );
   }

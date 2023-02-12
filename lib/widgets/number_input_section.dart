@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:nengar/gen/assets.gen.dart';
 import 'package:nengar/widgets/number_input_field.dart';
 import 'package:nengar/widgets/number_label.dart';
@@ -6,12 +6,14 @@ import 'package:nengar/widgets/number_label.dart';
 class NumberInputSection extends StatelessWidget {
   final String title;
   final TextEditingController textEditingController;
+  final TextInputAction textInputAction;
   final int maxLength;
 
   const NumberInputSection({
     Key? key,
     required this.title,
     required this.textEditingController,
+    required this.textInputAction,
     required this.maxLength,
   }) : super(key: key);
 
@@ -45,6 +47,7 @@ class NumberInputSection extends StatelessWidget {
           ),
           NumberInputField(
             textEditingController: textEditingController,
+            textInputAction: textInputAction,
             maxLength: maxLength,
           ),
         ],

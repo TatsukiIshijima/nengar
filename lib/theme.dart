@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nengar/gen/colors.gen.dart';
 import 'package:nengar/gen/fonts.gen.dart';
 
-// FIXME: iOSテーマ対応
-const CupertinoThemeData nengarCupertinoTheme = CupertinoThemeData(
-  primaryColor: ColorName.primaryColor,
-);
+MaterialBasedCupertinoThemeData nengarCupertinoLightTheme =
+    MaterialBasedCupertinoThemeData(materialTheme: nengarMaterialLightTheme);
+
+MaterialBasedCupertinoThemeData nengarCupertinoDarkTheme =
+    MaterialBasedCupertinoThemeData(materialTheme: nengarMaterialDarkTheme);
 
 ThemeData nengarMaterialLightTheme = ThemeData(
   brightness: Brightness.light,

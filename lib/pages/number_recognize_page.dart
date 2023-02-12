@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -56,9 +58,9 @@ class NumberRecognizePage extends HookWidget {
         trailingActions: [
           PlatformIconButton(
             onPressed: () => _appRouter.goEditPage(context),
-            icon: const Icon(
+            icon: Icon(
               Icons.settings,
-              color: Colors.white,
+              color: Platform.isAndroid ? Colors.white : Colors.grey,
             ),
           ),
         ],
@@ -128,7 +130,7 @@ class _RecognizePageBody extends StatelessWidget {
                 Container(
                   color: Colors.black.withAlpha(64),
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.15,
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -136,12 +138,12 @@ class _RecognizePageBody extends StatelessWidget {
                     children: children,
                   ),
                 ),
-                Container(
-                  color: Colors.white,
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  child: _RecognizedWinResultSection(
-                    uiModel: _numberRecognizeViewModel.winResultUiModel,
+                Expanded(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: _RecognizedWinResultSection(
+                      uiModel: _numberRecognizeViewModel.winResultUiModel,
+                    ),
                   ),
                 ),
               ],

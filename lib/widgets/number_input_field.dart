@@ -6,6 +6,7 @@ import 'package:nengar/text_style.dart';
 class NumberInputField extends StatelessWidget {
   final TextEditingController textEditingController;
   final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
   final int maxLines;
   final int maxLength;
   final Function? onEditingComplete;
@@ -16,6 +17,7 @@ class NumberInputField extends StatelessWidget {
     Key? key,
     required this.textEditingController,
     this.focusNode,
+    this.textInputAction,
     this.maxLines = 1,
     this.maxLength = 6,
     this.onEditingComplete,
@@ -28,6 +30,7 @@ class NumberInputField extends StatelessWidget {
     return PlatformTextFormField(
       controller: textEditingController,
       focusNode: focusNode,
+      textInputAction: textInputAction,
       keyboardType: TextInputType.number,
       maxLines: maxLines,
       maxLength: maxLength,

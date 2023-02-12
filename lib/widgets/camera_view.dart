@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -122,6 +123,7 @@ class _CameraViewState extends State<CameraView> {
       enableAudio: false,
     );
     _controller?.initialize().then((_) {
+      _controller?.lockCaptureOrientation();
       if (!mounted) {
         return;
       }

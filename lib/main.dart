@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nengar/app.dart';
 import 'package:nengar/log.dart';
@@ -8,6 +9,11 @@ List<CameraDescription> cameras = [];
 
 Future<void> run() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
