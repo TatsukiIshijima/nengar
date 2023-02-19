@@ -74,7 +74,7 @@ class NumberRecognizeViewModel {
 
     _isBusyUseState.value = true;
     final recognisedText = await _textRecognizer.processImage(inputImage);
-    final recognizedText = recognisedText.toRecognizedText().filteredByNumber();
+    final recognizedText = recognisedText.toRecognizedText();
     _paintRecognizedResultIfNeed(
       inputImage,
       recognizedText,
