@@ -33,6 +33,7 @@ class JudgeNumbersUseCase {
       return WinType.none;
     }
 
+    // TODO:複数件対応
     final recognizedNumber = recognizeText.blocks.first.text;
     if (recognizedNumber.isEmpty || !recognizedNumber.isSixDigitsNumber()) {
       return WinType.none;
