@@ -10,6 +10,8 @@ import 'package:nengar/model/camera_permission_error.dart';
 import 'package:nengar/text_style.dart';
 import 'package:nengar/viewmodel/camera_viewmodel.dart';
 
+import '../gen/colors.gen.dart';
+
 /// https://github.com/bharat-biradar/Google-Ml-Kit-plugin/blob/master/packages/google_ml_kit/example/lib/vision_detector_views/text_detector_view.dart
 
 class CameraView extends StatefulWidget {
@@ -87,7 +89,9 @@ class _CameraViewState extends State<CameraView> {
       return const _CameraViewBody(
         children: [
           Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              color: ColorName.primaryColor,
+            ),
           ),
         ],
       );

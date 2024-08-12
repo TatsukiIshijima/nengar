@@ -16,7 +16,6 @@ class AppRouterImpl extends AppRouter {
 
   @override
   String location(BuildContext context) {
-    // return GoRouterState.of(context).matchedLocation;
     return GoRouter.of(context).location();
   }
 }

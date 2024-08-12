@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nengar/gen/colors.gen.dart';
 import 'package:nengar/gen/fonts.gen.dart';
 
@@ -37,6 +38,37 @@ ThemeData nengarMaterialLightTheme = ThemeData(
   buttonTheme: const ButtonThemeData(
     buttonColor: ColorName.primaryColor,
     disabledColor: Colors.black38,
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      foregroundColor: ColorName.primaryDarkColor,
+      backgroundColor: ColorName.primaryColor,
+      disabledForegroundColor: Colors.black38,
+      disabledBackgroundColor: Colors.black38,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
+    ),
+  ),
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: ColorName.primaryColor,
+    selectionColor: ColorName.primaryColor,
+    selectionHandleColor: ColorName.primaryColor,
+  ),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: ColorName.primaryColor,
+    titleTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontFamily: FontFamily.notoSerifJP,
+    ),
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: ColorName.primaryDarkColor,
+      statusBarIconBrightness: Brightness.light,
+    ),
+    iconTheme: IconThemeData(
+      color: Colors.white,
+    ),
   ),
 );
 
