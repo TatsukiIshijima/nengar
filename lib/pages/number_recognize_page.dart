@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -58,9 +56,8 @@ class NumberRecognizePage extends HookWidget {
         trailingActions: [
           PlatformIconButton(
             onPressed: () => _appRouter.goEditPage(context),
-            icon: Icon(
+            icon: const Icon(
               Icons.settings,
-              color: Platform.isAndroid ? Colors.white : Colors.grey,
             ),
           ),
         ],

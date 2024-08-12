@@ -43,7 +43,7 @@ class App extends HookWidget {
       path: AppRouter.numberRecognizePageRoutePath,
       builder: (context, state) {
         final forceUpdateQuery =
-            state.queryParams[AppRouter.forceUpdateQuery] ?? 'false';
+            state.uri.queryParameters[AppRouter.forceUpdateQuery] ?? 'false';
         final forceUpdate = forceUpdateQuery.toLowerCase() == 'true';
         return NumberRecognizePage(
           appRouterRef.value,
@@ -92,8 +92,7 @@ class App extends HookWidget {
           ),
           home: _flavorBanner(
             child: PlatformApp.router(
-              routeInformationParser: router.routeInformationParser,
-              routerDelegate: router.routerDelegate,
+              routerConfig: router,
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
             ),
