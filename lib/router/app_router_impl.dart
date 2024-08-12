@@ -15,5 +15,19 @@ class AppRouterImpl extends AppRouter {
   }
 
   @override
-  String location(BuildContext context) => GoRouter.of(context).location;
+  String location(BuildContext context) {
+    // return GoRouterState.of(context).matchedLocation;
+    return GoRouter.of(context).location();
+  }
+}
+
+extension GoRouterExtension on GoRouter {
+  String location() {
+    final RouteMatch lastMatch = routerDelegate.currentConfiguration.last;
+    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+        ? lastMatch.matches
+        : routerDelegate.currentConfiguration;
+    final String location = matchList.uri.toString();
+    return location;
+  }
 }

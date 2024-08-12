@@ -87,8 +87,8 @@ class NumberRecognizeViewModel {
     InputImage inputImage,
     model.RecognizedText recognizedText,
   ) {
-    final size = inputImage.inputImageData?.size;
-    final rotation = inputImage.inputImageData?.imageRotation;
+    final size = inputImage.metadata?.size;
+    final rotation = inputImage.metadata?.rotation;
     if (size != null && rotation != null) {
       final painter = NumberDetectorPainter(recognizedText, size, rotation);
       _customPaintUseState.value = CustomPaint(painter: painter);
