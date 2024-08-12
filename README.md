@@ -2,10 +2,12 @@
 
 年賀状のお年玉番号を認識するアプリ
 
+[<img src="https://raw.githubusercontent.com/steverichey/google-play-badge-svg/master/img/ja_get.svg" width="200"/>](https://play.google.com/store/apps/details?id=com.tatsuki.nengar)
+
 # 開発環境
 Flutter のバージョン管理に [fvm](https://github.com/fluttertools/fvm) を使用しています。
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.7.0-aqua.svg)](https://developer.apple.com/jp/xcode/)
+[![Flutter](https://img.shields.io/badge/Flutter-3.24.0-aqua.svg)](https://developer.apple.com/jp/xcode/)
 
 # ライブラリ
 
