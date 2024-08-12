@@ -125,6 +125,9 @@ class _CameraViewState extends State<CameraView> {
       camera,
       ResolutionPreset.high,
       enableAudio: false,
+      imageFormatGroup: Platform.isAndroid
+          ? ImageFormatGroup.nv21
+          : ImageFormatGroup.bgra8888,
     );
     _controller?.initialize().then((_) {
       _controller?.lockCaptureOrientation();
